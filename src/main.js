@@ -19,7 +19,6 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import SocialSharing from "vue-social-sharing";
 import VueGitHubButtons from "vue-github-buttons";
-import VueAMap from 'vue-amap';
 import "vue-github-buttons/dist/vue-github-buttons.css";
 import App from "./App.vue";
 import '@/assets/scss/white-dashboard.scss';
@@ -33,7 +32,7 @@ import RTLPlugin from "./RTLPlugin";
 import Notify from "@/components/NotificationPlugin";
 import i18n from "./i18n"
 import SideBar from "@/components/SidebarPlugin";
-
+import VueAMap from 'vue-amap';
 
 Vue.config.productionTip = false;
 
@@ -57,9 +56,14 @@ Vue.use(Notify);
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: '24eab6be67592f28a28b0df41307192f',
-  plugin: ['AMap.ElasticMarker','AMap.ToolBar', 'AMap.Scale', 'AMap.OverView', 'AMap.MapType','AMap.Autocomplete','AMap.PlaceSearch','AMap.Geocoder','AMap.MouseTool','AMap.CircleEditor','AMap.PolygonEditor','AMap.PolylineEditor','AMap.MarkerClusterer','AMap.RangingTool'],
+  plugin: [
+	  'AMap.ElasticMarker','AMap.ControlBar','AMap.ToolBar', 'AMap.Scale', 'AMap.OverView',
+	  'AMap.MapType','AMap.Autocomplete','AMap.PlaceSearch','AMap.Geocoder',
+	  'AMap.MouseTool','AMap.CircleEditor','AMap.PolygonEditor','AMap.PolylineEditor',
+	  'AMap.MarkerClusterer','AMap.RangingTool','AMap.Object3D','AMap.Object3DLayer'
+   ],
   uiVersion: '1.1',
-  v: '2.0'
+  v: '1.4.15'
 });
 
 import axios from 'axios';
