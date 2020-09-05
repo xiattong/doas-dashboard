@@ -5,17 +5,19 @@
             <card type="chart">
                 <template slot="header">
                     <div class="row">
-                        <div class="col-sm-6 text-left">
+                        <div class="col-sm-3 text-left">
                             <template>
                                 <h5 class="card-category">浓度曲线图</h5>
                             </template>
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-9">
                             <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
                                 <template>
-                                    <label v-for="(option, index) in bigLineChart.bigLineChartCategories" :key="option" class="btn btn-success btn-sm btn-simple"
-                                     :class="{active:bigLineChart.activeIndex === index}" :id="index">
-                                        <input type="radio" @click="initBigChart(index)" name="options" autocomplete="off" :checked="bigLineChart.activeIndex === index">
+                                    <label v-for="(option, index) in bigLineChart.bigLineChartCategories" 
+										:key="option" class="btn btn-success btn-sm btn-simple"
+										:class="{active:bigLineChart.activeIndex === index}" :id="index">
+                                        <input type="radio" @click="initBigChart(index)" name="options" autocomplete="off" 
+											:checked="bigLineChart.activeIndex === index">
                                         {{ option }}
                                     </label>
                                 </template>
@@ -38,7 +40,7 @@
 				  </h5>
 				</template>
 				<base-alert type="success">
-				  <span style="font-size: 0.80rem;">
+				  <span style="font-size: 0.70rem;">
 					{{latestTime}}&nbsp;&nbsp;|&nbsp;&nbsp;{{realTimeData}}
 				  </span>
 				</base-alert>
@@ -66,6 +68,7 @@ export default {
 	},
 	data() {
 		return {
+			timer: null,
 			latestTime: '',
 			realTimeData: '',
 			bigLineChart: {
@@ -78,15 +81,16 @@ export default {
 				},
 				extraOptions: chartConfigs.purpleChartOptions,
 				gradientColors: config.colors.primaryGradient,
-				timer: null,
 			}
 		}
 	},
 	methods: {
 		refreshChartData() {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
-			this.axios.post('http://localhost:8090/doas/initData')
-				.then(resp => {
+			this.axios.post('http://localhost:8090/doas/initData',{
+				dataType : 'chart',
+				extractNum : 100
+			}).then(resp => {
 					if (resp.data.code == 0) {
 						this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
 						this.bigLineChart.labels = resp.data.result.xAxis;
@@ -125,8 +129,7 @@ export default {
 	},
 	mounted() {
 		//定时查询最新的图标数据
-		//this.timer = setInterval(this.refreshChartData, 1000);
-		this.initBigChart(0);
+		this.timer = setInterval(this.refreshChartData, 1000);
 	},
 	beforeDestroy() {
 		clearInterval(this.timer);

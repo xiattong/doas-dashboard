@@ -1,7 +1,5 @@
 <template>
-  <div
-      class="sidebar"
-      :data="backgroundColor">
+  <div class="sidebar" :data="backgroundColor">
       <div class="sidebar-wrapper text-left">
         <div class="logo">
           <a href="javascript:void(0)" class="simple-text logo-normal">
@@ -9,14 +7,22 @@
           </a>
         </div>
         <ul class="nav">
-          <slot>
-            <sidebar-link>
-            </sidebar-link>
-          </slot>
+			<slot>
+				<sidebar-link>
+				</sidebar-link>
+			</slot>
         </ul>
+		<div class="copyright">
+			<a href="#" class="nav-link">
+				<p>&copy; 合肥琪锋光电科技有限公司</p>		
+			</a>
+		</div>
       </div>
   </div>
 </template>
+<style>
+	.copyright{position:fixed;bottom:10px;font-size: 0.625rem;}
+</style>
 <script>
 import SidebarLink from "./SidebarLink.vue";
 
@@ -28,7 +34,7 @@ export default{
   props: {
     title: {
       type: String,
-      default: "DOASV2"
+      default: "多组分气体走航分析显示系统"
     },
     backgroundColor: {
       type: String,

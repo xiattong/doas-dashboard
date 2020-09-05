@@ -2,98 +2,154 @@
   <div class="content">
 	<div style="display: flex;justify-content: center;">
 		<div id="amapContainer" style="width: 100%;height: calc(100vh - 110px);"></div>
+		<div id="amapBar">
+			<div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
+			    <template>
+			        <label v-for="(option, index) in mapData.factors" :key="option" :id="index"
+						class="btn btn-info btn-sm btn-simple" :class="{active:mapData.activeIndex === index}">
+			            <input type="radio" @click="chooseFactors(index)" name="options" autocomplete="off">
+						{{option}}
+			        </label>
+			    </template>
+			</div>
+		</div>
 	</div>
   </div>
 </template>
 
 <style>
+	.btn-info{font-size: 0.75rem;}
 	.amap-ctrl-list-layer p {color: #212529;}
+	#amapBar{
+		width: 80%;height: 30px;
+		position: fixed;top:90px; padding: 5px 8px; display:flex;align-items: center;
+	}
 </style>
 <script src="https://webapi.amap.com/maps?v=1.4.15&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
 <script>
+import {
+  Card
+} from "@/components/index";
 import {lazyAMapApiLoaderInstance} from 'vue-amap';
-let map,object3Dlayer;
+let map,object3Dlayer,lines,lineGeo;
 export default{
 	data() {
 		return {
-			
+			timer: null,
+			toCoordinate: null,
+			hiehtFactor: 100,
+			extractNum: 100,
+			red: 300,
+			mapData:{
+				activeIndex: 0,
+				// 因子
+				factors:[],
+				// 数值/高度 二维数组
+				data: [],
+				// 颜色 二维数组
+				colors: [],
+				// 坐标
+				coordinates: []
+			}
 		}
 	},
-	created() {
-		lazyAMapApiLoaderInstance.load().then(() => {
-			map = new AMap.Map('amapContainer', {
-				rotateEnable:true,
-				pitchEnable:true,
-				expandZoomRange: true,
-				zoom: 15,
-				pitch: 50,
-				rotation: 0,
-				viewMode:'3D',
-				zooms:[2,20],
-				center:[117.135199,31.839104]
-			});
-			this.initMapTools();
-			this.initPrisms();
-			
-			
-			
-			
-		});
+	mounted() {
+		this.initMap();
+		this.timer = setInterval(this.refreshMapData, 1000);
+	},
+	beforeDestroy() {
+		clearInterval(this.timer);
 	},
 	methods: {
-		initPrisms(){
-			// 以不规则棱柱体 Prism 为例，添加至 3DObjectLayer 图层中
-			var paths = [
-				[117.135080,31.838900],
-				[117.135080,31.838880]
-			];
-			
-			var bounds = paths.map(function(path) {
-				return new AMap.LngLat(path[0], path[1]);
+		initMap(){
+			lazyAMapApiLoaderInstance.load().then(() => {
+				map = new AMap.Map('amapContainer', {
+					rotateEnable:true,
+					pitchEnable:true,
+					expandZoomRange: true,
+					zoom: 13,
+					pitch: 65,
+					rotation: 0,
+					viewMode:'3D',
+					zooms:[2,20],
+					center: [117.284387,31.863847]
+				});
+				this.initMapTools();
 			});
-			
-			// 创建 Object3D 对象
-			var prism = new AMap.Object3D.Prism({
-				path: bounds,
-				height: 500,
-				color: 'rgba(249, 150, 230, 0.7)' // 支持 #RRGGBB、rgb()、rgba() 格式数据
-			});
-					
-			// 开启透明度支持
-			prism.transparent = true;
-					
-			// 添加至 3D 图层
-			object3Dlayer.add(prism);
+		},
+		refreshMapData() {
+			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
+			this.axios.post('http://localhost:8090/doas/initData',{
+				dataType : 'map',
+				extractNum : 0,
+				red: this.red
+			}).then(resp => {
+					if (resp.data.code == 0) {
+						this.mapData.factors = resp.data.result.factors;
+						this.mapData.data = resp.data.result.data;
+						this.mapData.colors = resp.data.result.colors;
+						this.mapData.coordinates = resp.data.result.coordinates;
+						this.initMapData(this.mapData.activeIndex);
+					}
+				}).catch(err => {
+					console.log(err);
+				})
+		},
+		initMapData(index){
+			//连线对象
+			object3Dlayer.clear();
+			lines = new AMap.Object3D.Line();
+			lineGeo = lines.geometry;
+			for (let i = 0; i < this.mapData.coordinates.length ; i++ ) {
+				// 坐标
+				let coordinate = this.mapData.coordinates[i];
+				let lnglat = map.lngLatToGeodeticCoord(coordinate);
+				lnglat.x = AMap.Util.format(lnglat.x, 3);
+				lnglat.y = AMap.Util.format(lnglat.y, 3);
+				let center  = lnglat;
+				// 高度
+				let height = -1 * this.mapData.data[index][i] * this.hiehtFactor
+				// 连线
+				lineGeo.vertices.push(center.x, center.y, 0);
+				let color = this.mapData.colors[index][i];
+				lineGeo.vertexColors.push(color[0], color[1], color[2], 1);
+				lineGeo.vertices.push(center.x, center.y, height);
+				lineGeo.vertexColors.push(color[0], color[1], color[2], 1);
+				if(this.toCoordinate == null 
+					&& i == this.mapData.coordinates.length - 1){
+					// 设置地图坐标中心位置
+					this.toCoordinate = coordinate;
+					map.panTo(this.toCoordinate);
+				}
+			}
+			object3Dlayer.add(lines);
+			this.mapData.activeIndex = index;
 		},
 		initMapTools(){
 			// 比例尺
 			map.addControl(new AMap.Scale());
-			
-			// 在图面添加类别切换控件，实现默认图层与卫星图、实施交通图层之间切换的控制
+			// 默认图层/卫星图/交通图层之间切换
 			map.addControl(new AMap.MapType({
 				defaultType: 0,
 				showTraffic: false,
 				showRoad : false
 			}));
-			
 			 // 添加 3D 罗盘控制
 			map.addControl(new AMap.ControlBar({
 				position: {
 					right: '10px',
-					bottom: '0px'
+					bottom: '-80px'
 				},
 				showControlButton: true,
 				showZoomBar: false
 			}));
-			
 			// 添加 Object3DLayer 图层，用于添加 3DObject 对象
 			object3Dlayer = new AMap.Object3DLayer();
 			map.add(object3Dlayer);
 		},
-		initDataCurve(){
-			
-
-			console.log("地图图块加载完毕！当前地图中心点为：" + map.getCenter());
+		chooseFactors(index){
+			this.toCoordinate = null;
+			this.initMapData(index);
 		}
 	}
 }

@@ -57,11 +57,8 @@ Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: '24eab6be67592f28a28b0df41307192f',
   plugin: [
-	  'AMap.ElasticMarker','AMap.ControlBar','AMap.ToolBar', 'AMap.Scale', 'AMap.OverView',
-	  'AMap.MapType','AMap.Autocomplete','AMap.PlaceSearch','AMap.Geocoder',
-	  'AMap.MouseTool','AMap.CircleEditor','AMap.PolygonEditor','AMap.PolylineEditor',
-	  'AMap.MarkerClusterer','AMap.RangingTool','AMap.Object3D','AMap.Object3DLayer'
-   ],
+	  'AMap.ControlBar', 'AMap.Scale','AMap.MapType','AMap.Object3D','AMap.Object3DLayer','AMap.DistrictSearch'
+  ],
   uiVersion: '1.1',
   v: '1.4.15'
 });
