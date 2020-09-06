@@ -1,7 +1,7 @@
 <template>
   <div class="content">
 	<div style="display: flex;justify-content: center;">
-		<div id="amapContainer" style="width: 100%;height: calc(100vh - 110px);"></div>
+		<div id="amapContainer"></div>
 		<div id="amapBar">
 			<div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
 			    <template>
@@ -18,10 +18,11 @@
 </template>
 
 <style>
+	#amapContainer{width: 100%; height: calc(100vh - 110px);}
 	.btn-info{font-size: 0.75rem;}
 	.amap-ctrl-list-layer p {color: #212529;}
 	#amapBar{
-		width: 80%;height: 30px;
+		width: 80%;min-height: 30px;
 		position: fixed;top:90px; padding: 5px 8px; display:flex;align-items: center;
 	}
 </style>

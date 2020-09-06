@@ -58,12 +58,12 @@
 						</div>
 						<div class="row">
 						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="红色曲线临界浓度" type="number"
+							<base-input label="红色线条临界浓度" type="number"
 								v-model="$rtl.mapParams.red">
 							</base-input>
 						  </div>
 						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="曲线高度参数"  type="number"
+							<base-input label="线条高度调参"  type="number"
 								v-model="$rtl.mapParams.hiehtFactor">
 							</base-input>
 						  </div>
@@ -96,18 +96,8 @@ export default{
 	},
 	data() {
 	  return {
-		  searchModalVisible: false,
-		  searchQuery: ''
+		  searchModalVisible: false
 	  };
-	},
-	created(){
-		console.log( this.$rtl.chartParams.refreshSecond);
-		console.log( this.$rtl.chartParams.extractNum);
-		console.log('***********************************************')
-		console.log( this.$rtl.mapParams.refreshSecond);
-		console.log( this.$rtl.mapParams.extractNum);
-		console.log( this.$rtl.mapParams.red);
-		console.log( this.$rtl.mapParams.hiehtFactor);
 	},
 	methods:{
 		closeModal(){
