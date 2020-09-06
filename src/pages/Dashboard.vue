@@ -36,7 +36,7 @@
 			<card>
 				<template slot="header">
 				  <h5 class="card-category">
-					  <i class="tim-icons icon-time-alarm "></i>&nbsp;&nbsp;|&nbsp;&nbsp;采集因子 : 采集值/单位
+					  最新时刻&nbsp;&nbsp;|&nbsp;&nbsp;采集因子 : 采集值/单位
 				  </h5>
 				</template>
 				<base-alert type="success">
@@ -89,19 +89,25 @@ export default {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
 			this.axios.post('http://localhost:8090/doas/initData',{
 				dataType : 'chart',
-				extractNum : 100
+				extractNum : this.$rtl.chartParams.extractNum
 			}).then(resp => {
-					if (resp.data.code == 0) {
-						this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
-						this.bigLineChart.labels = resp.data.result.xAxis;
-						this.bigLineChart.allData = resp.data.result.data;
-						this.latestTime = resp.data.result.latestTime;
-						this.realTimeData = resp.data.result.realTimeData;
-						this.initBigChart(this.bigLineChart.activeIndex);
-					}
-				}).catch(err => {
-					console.log(err);
-				})
+				if (resp.data.code == 0) {
+					this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
+					this.bigLineChart.labels = resp.data.result.xAxis;
+					this.bigLineChart.allData = resp.data.result.data;
+					this.latestTime = resp.data.result.latestTime;
+					this.realTimeData = resp.data.result.realTimeData;
+					this.initBigChart(this.bigLineChart.activeIndex);
+				}
+			}).catch(err => {
+				console.log(err);
+			})
+			// 刷新定时器
+			if(this.$rtl.chartParams.refreshTimer){
+				this.$rtl.mapParams.refreshTimer = false;
+				clearInterval(this.timer);
+				this.timer = setInterval(this.refreshChartData, this.$rtl.chartParams.refreshSecond * 1000);
+			}
 		},
 		initBigChart(index) {
 			let chartData = {
@@ -129,7 +135,7 @@ export default {
 	},
 	mounted() {
 		//定时查询最新的图标数据
-		this.timer = setInterval(this.refreshChartData, 1000);
+		this.timer = setInterval(this.refreshChartData, this.$rtl.chartParams.refreshSecond * 1000);
 	},
 	beforeDestroy() {
 		clearInterval(this.timer);

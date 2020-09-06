@@ -37,9 +37,6 @@ export default{
 		return {
 			timer: null,
 			toCoordinate: null,
-			hiehtFactor: 100,
-			extractNum: 100,
-			red: 300,
 			mapData:{
 				activeIndex: 0,
 				// 因子
@@ -55,7 +52,7 @@ export default{
 	},
 	mounted() {
 		this.initMap();
-		this.timer = setInterval(this.refreshMapData, 1000);
+		this.timer = setInterval(this.refreshMapData,  this.$rtl.mapParams.refreshSecond * 1000);
 	},
 	beforeDestroy() {
 		clearInterval(this.timer);
@@ -81,19 +78,25 @@ export default{
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
 			this.axios.post('http://localhost:8090/doas/initData',{
 				dataType : 'map',
-				extractNum : 0,
-				red: this.red
+				extractNum : this.$rtl.mapParams.extractNum,
+				red:  this.$rtl.mapParams.red
 			}).then(resp => {
-					if (resp.data.code == 0) {
-						this.mapData.factors = resp.data.result.factors;
-						this.mapData.data = resp.data.result.data;
-						this.mapData.colors = resp.data.result.colors;
-						this.mapData.coordinates = resp.data.result.coordinates;
-						this.initMapData(this.mapData.activeIndex);
-					}
-				}).catch(err => {
-					console.log(err);
-				})
+				if (resp.data.code == 0) {
+					this.mapData.factors = resp.data.result.factors;
+					this.mapData.data = resp.data.result.data;
+					this.mapData.colors = resp.data.result.colors;
+					this.mapData.coordinates = resp.data.result.coordinates;
+					this.initMapData(this.mapData.activeIndex);
+				}
+			}).catch(err => {
+				console.log(err);
+			})
+			// 刷新定时器
+			if(this.$rtl.mapParams.refreshTimer){
+				this.$rtl.mapParams.refreshTimer = false;
+				clearInterval(this.timer);
+				this.timer = setInterval(this.refreshMapData,  this.$rtl.mapParams.refreshSecond * 1000);
+			}
 		},
 		initMapData(index){
 			//连线对象
@@ -108,7 +111,7 @@ export default{
 				lnglat.y = AMap.Util.format(lnglat.y, 3);
 				let center  = lnglat;
 				// 高度
-				let height = -1 * this.mapData.data[index][i] * this.hiehtFactor
+				let height = -1 * this.mapData.data[index][i] * this.$rtl.mapParams.hiehtFactor;
 				// 连线
 				lineGeo.vertices.push(center.x, center.y, 0);
 				let color = this.mapData.colors[index][i];
