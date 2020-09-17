@@ -6,13 +6,13 @@ export default {
           isRTL: false,
 		  chartParams:{
 			  extractNum: 100,  //抽取数量
-			  refreshSecond: 3,  //刷新时间 单位：秒
+			  refreshSecond: 1,  //刷新时间 单位：秒
 			  refreshTimer: false  //定时器刷新控制
 		  },
 		  mapParams:{
 			  extractNum: 0,  //抽取数量
 			  refreshSecond: 3, //刷新时间 单位：秒
-			  red: 20, //色等值
+			  red: 100, //色等值
 			  hiehtFactor: 100 ,//高度参数
 			  refreshTimer: false //定时器刷新控制
 		  },
