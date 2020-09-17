@@ -57,7 +57,7 @@ Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: '24eab6be67592f28a28b0df41307192f',
   plugin: [
-	  'AMap.ControlBar', 'AMap.Scale','AMap.MapType','AMap.Object3D','AMap.Object3DLayer','AMap.DistrictSearch'
+	  'AMap.ControlBar', 'AMap.Scale','AMap.MapType','AMap.Object3D','AMap.DistrictSearch'
   ],
   uiVersion: '1.1',
   v: '1.4.15'

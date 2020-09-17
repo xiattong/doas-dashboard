@@ -72,8 +72,30 @@ export default{
 					zooms:[2,20],
 					center: [117.284387,31.863847]
 				});
-				this.initMapTools();
+				// 比例尺
+				map.addControl(new AMap.Scale());
+				// 默认图层/卫星图/交通图层之间切换
+				map.addControl(new AMap.MapType({
+					defaultType: 0,
+					showTraffic: false,
+					showRoad : false
+				}));
+				 // 添加 3D 罗盘控制
+				map.addControl(new AMap.ControlBar({
+					position: {
+						right: '10px',
+						bottom: '-80px'
+					},
+					showControlButton: true,
+					showZoomBar: false
+				}));
+				// 添加 Object3DLayer 图层，用于添加 3DObject 对象
+				setTimeout(this.initObject3DLayer,  3 * 1000);
 			});
+		},
+		initObject3DLayer(){
+			object3Dlayer = new AMap.Object3DLayer();
+			map.add(object3Dlayer);
 		},
 		refreshMapData() {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
@@ -83,6 +105,8 @@ export default{
 				red:  this.$rtl.mapParams.red
 			}).then(resp => {
 				if (resp.data.code == 0) {
+					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
+					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.mapData.factors = resp.data.result.factors;
 					this.mapData.data = resp.data.result.data;
 					this.mapData.colors = resp.data.result.colors;
@@ -128,28 +152,6 @@ export default{
 			}
 			object3Dlayer.add(lines);
 			this.mapData.activeIndex = index;
-		},
-		initMapTools(){
-			// 比例尺
-			map.addControl(new AMap.Scale());
-			// 默认图层/卫星图/交通图层之间切换
-			map.addControl(new AMap.MapType({
-				defaultType: 0,
-				showTraffic: false,
-				showRoad : false
-			}));
-			 // 添加 3D 罗盘控制
-			map.addControl(new AMap.ControlBar({
-				position: {
-					right: '10px',
-					bottom: '-80px'
-				},
-				showControlButton: true,
-				showZoomBar: false
-			}));
-			// 添加 Object3DLayer 图层，用于添加 3DObject 对象
-			object3Dlayer = new AMap.Object3DLayer();
-			map.add(object3Dlayer);
 		},
 		chooseFactors(index){
 			this.toCoordinate = null;

@@ -6,11 +6,28 @@
       </div>
       <div class="collapse navbar-collapse show text-left">
         <ul class="navbar-nav ml-auto">
-			<li class="search-bar input-group"  @click="searchModalVisible = true">
-			  <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal">
-				  <i class="tim-icons icon-settings"></i>
-			    <span class="d-lg-none d-md-block">参数设置</span>
-			  </button>
+			<li class="search-bar input-group" >
+				<drop-down>
+					<base-button round icon :type="$rtl.sysState" data-toggle="dropdown" data-target="#sysState">
+						<i class="tim-icons icon-wifi"></i>
+					</base-button>
+					<ul class="dropdown-menu dropdown-navbar" id="sysState">
+						<a href="#" class="dropdown-item">系统状态： {{ $rtl.sysState == 'success' ? '已连接' : '断开' }}</a>
+					</ul>
+				</drop-down>
+				<drop-down>
+					<base-button round icon :type="$rtl.gpsState" data-toggle="dropdown" data-target="#gpsState">
+						<i class="tim-icons icon-send"></i>
+					</base-button>
+					<ul class="dropdown-menu dropdown-navbar" id="gpsState">
+						<a href="#" class="dropdown-item">GPS状态： {{ $rtl.gpsState == 'success' ? '已连接' : '断开' }}</a>
+					</ul>
+				</drop-down>
+				<base-button round icon type="primary" id="setting"
+					@click="searchModalVisible = true"
+					data-toggle="modal" data-target="#searchModal">
+					<i class="tim-icons icon-settings-gear-63"></i>
+				</base-button>
 			</li>
 			<modal :show.sync="searchModalVisible"
 			       id="searchModal"
@@ -58,7 +75,7 @@
 						</div>
 						<div class="row">
 						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="红色线条临界浓度" type="number"
+							<base-input label="色等值" type="number"
 								v-model="$rtl.mapParams.red">
 							</base-input>
 						  </div>
@@ -76,8 +93,10 @@
   </nav>
 </template>
 <style>
+	#setting{margin-left: 10px !important;}
 	.tim-icons{margin-bottom: 10px;}
 	.modal-body{background-color: #f5f6fa;}
+	.dropdown-item{text-align: center;}
 </style>
 
 <script>

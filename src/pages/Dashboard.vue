@@ -36,7 +36,7 @@
 			<card>
 				<template slot="header">
 				  <h5 class="card-category">
-					  最新时刻&nbsp;&nbsp;|&nbsp;&nbsp;采集因子 : 采集值/单位
+					  最新时刻&nbsp;&nbsp;|&nbsp;&nbsp;采集因子 : 采集值 单位
 				  </h5>
 				</template>
 				<base-alert type="success">
@@ -92,6 +92,8 @@ export default {
 				extractNum : this.$rtl.chartParams.extractNum
 			}).then(resp => {
 				if (resp.data.code == 0) {
+					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
+					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
 					this.bigLineChart.labels = resp.data.result.xAxis;
 					this.bigLineChart.allData = resp.data.result.data;
@@ -133,7 +135,7 @@ export default {
 			this.bigLineChart.activeIndex = index;
 		}
 	},
-	mounted() {
+	created() {
 		//定时查询最新的图标数据
 		this.timer = setInterval(this.refreshChartData, this.$rtl.chartParams.refreshSecond * 1000);
 	},
