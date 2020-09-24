@@ -13,6 +13,12 @@
 			    </template>
 			</div>
 		</div>
+		<div id="colorScalar">
+			<div id="color1">{{this.$rtl.mapParams.red * (1/4)}}</div>
+			<div id="color2">{{this.$rtl.mapParams.red * (2/4)}}</div>
+			<div id="color3">{{this.$rtl.mapParams.red * (3/4)}}</div>
+			<div id="color4">{{this.$rtl.mapParams.red}}</div>
+		</div>
 	</div>
   </div>
 </template>
@@ -22,9 +28,16 @@
 	.btn-info{font-size: 0.75rem;}
 	.amap-ctrl-list-layer p {color: #212529;}
 	#amapBar{
-		width: 80%;min-height: 30px;
-		position: fixed;top:90px; padding: 5px 8px; display:flex;align-items: center;
+		width: 80%;min-height: 30px;position: fixed;top:95px; right: 120px;align-items: right;
 	}
+	#colorScalar{
+		width: 21%;height:21px;position: fixed;top:145px; right: 120px;align-items: right; 
+	}
+	#colorScalar div{width: 25%;height:21px;float: left;}
+	#color1{background-image: linear-gradient(to right, #0000ff, #00ffff); text-align: right; padding-right: 5px;}
+	#color2{background-image: linear-gradient(to right, #00ffff, #00ff00); text-align: right; padding-right: 5px;}
+	#color3{background-image: linear-gradient(to right, #00ff00, #ffff00); text-align: right; padding-right: 5px;}
+	#color4{background-image: linear-gradient(to right, #ffff00, #ff0000); text-align: right; padding-right: 5px;}
 </style>
 <script src="https://webapi.amap.com/maps?v=1.4.15&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
 <script>
@@ -78,9 +91,12 @@ export default{
 				map.addControl(new AMap.MapType({
 					defaultType: 0,
 					showTraffic: false,
-					showRoad : false
+					showRoad : false,
+					position: {
+						left: '10px'
+					},
 				}));
-				 // 添加 3D 罗盘控制
+				// 添加 3D 罗盘控制
 				map.addControl(new AMap.ControlBar({
 					position: {
 						right: '10px',

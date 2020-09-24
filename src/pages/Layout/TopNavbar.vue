@@ -75,7 +75,7 @@
 						</div>
 						<div class="row">
 						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="色等值" type="number"
+							<base-input label="红色浓度值" type="number"
 								v-model="$rtl.mapParams.red">
 							</base-input>
 						  </div>
