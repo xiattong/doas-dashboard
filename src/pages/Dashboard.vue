@@ -68,6 +68,7 @@ export default {
 	},
 	data() {
 		return {
+			ip:'',
 			timer: null,
 			latestTime: '',
 			realTimeData: '',
@@ -87,7 +88,7 @@ export default {
 	methods: {
 		refreshChartData() {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
-			this.axios.post('http://localhost:8090/doas/initData',{
+			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
 				dataType : 'chart',
 				extractNum : this.$rtl.chartParams.extractNum
 			}).then(resp => {
