@@ -4,13 +4,13 @@
       <sidebar-link to="/dashboard">
         <i class="tim-icons icon-chart-pie-36"></i>
         <template v-if="!isRTL">
-          <p>Dashboard</p>
+          <p>浓度曲线</p>
         </template>
       </sidebar-link>
       <sidebar-link to="/maps">
         <i class="tim-icons icon-pin"></i>
         <template v-if="!isRTL">
-          <p>Maps</p>
+          <p>地图</p>
         </template>
       </sidebar-link>
     </side-bar>
@@ -24,7 +24,9 @@
     </div>
   </div>
 </template>
-<style lang="scss"></style>
+<style lang="scss">
+	.nav-item p {font-size: 14px;}
+</style>
 <script>
 
 import TopNavbar from "./TopNavbar.vue";

@@ -11,12 +11,12 @@ const routes = [{
   children:[
     {
       path: "dashboard",
-      name: "Dashboard",
+      name: "浓度曲线",
       component: Dashboard
     },
     {
       path: "maps",
-      name: "Maps",
+      name: "地图",
       component: Maps
     }
   ]
