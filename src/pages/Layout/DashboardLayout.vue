@@ -30,10 +30,7 @@
 <script>
 
 import TopNavbar from "./TopNavbar.vue";
-import ContentFooter from "./ContentFooter.vue";
 import DashboardContent from "./DashboardContent.vue";
-import SidebarShare from "./SidebarSharePlugin.vue";
-import MobileMenu from "./MobileMenu.vue";
 import SideBar from "@/components/SidebarPlugin/SideBar.vue";
 import SidebarLink from "@/components/SidebarPlugin/SidebarLink.vue";
 
@@ -43,11 +40,8 @@ export default{
   components: {
     TopNavbar,
     DashboardContent,
-    ContentFooter,
-    MobileMenu,
     SideBar,
-    SidebarLink,
-    SidebarShare
+    SidebarLink
   },
   data() {
     return {

@@ -123,10 +123,10 @@ export default {
 					pointBackgroundColor: config.colors.primary,
 					pointBorderColor: 'rgba(255,255,255,0)',
 					pointHoverBackgroundColor: config.colors.primary,
-					pointBorderWidth: 10,
-					pointHoverRadius: 4,
-					pointHoverBorderWidth: 15,
-					pointRadius: 4,
+					pointRadius: 1,
+					pointHoverRadius: 7,
+					pointBorderWidth: 1,
+					pointHoverBorderWidth: 1,
 					data: this.bigLineChart.allData[index]
 				}],
 				labels: this.bigLineChart.labels
