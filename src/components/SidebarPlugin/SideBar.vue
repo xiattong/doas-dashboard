@@ -14,7 +14,7 @@
         </ul>
 		<div class="copyright">
 			<a href="#" class="nav-link">
-				<p>&copy; 合肥琪锋光电科技有限公司</p>		
+				<p>&copy; {{$rtl.companyName}}</p>
 			</a>
 		</div>
       </div>
