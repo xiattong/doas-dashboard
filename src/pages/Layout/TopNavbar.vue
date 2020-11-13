@@ -39,20 +39,6 @@
 				   <card>
 					   <div class="row">
 						  <div class="col-md-12 pr-md-12 text-left">
-							  <h5 class="title">公司名称设置</h5>
-						  </div>
-						</div>
-						<div class="row">
-						  <div class="col-md-12 pr-md-12 text-left">
-							<base-input type="text"
-								v-model="$rtl.companyName">
-							</base-input>
-						  </div>
-						</div>
-					</card>
-				   <card>
-					   <div class="row">
-						  <div class="col-md-12 pr-md-12 text-left">
 							  <h5 class="title">曲线图参数设置</h5>
 						  </div>
 						</div>
@@ -111,9 +97,9 @@
 	.tim-icons{margin-bottom: 10px;}
 	.modal-body{background-color: #f5f6fa;}
 	.dropdown-item{text-align: center;}
-	.modal.show .modal-dialog {
+	/*.modal.show .modal-dialog {
 	    -webkit-transform: translate(0, 5%);
-	}
+	}*/
 </style>
 
 <script>

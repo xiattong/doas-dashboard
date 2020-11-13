@@ -19,7 +19,7 @@ export default {
 		  sysState: 'danger',
 		  gpsState: 'danger',
 		  hostIp: '127.0.0.1',
-		  companyName: '合肥琪锋光电科技有限公司'
+		  companyName: ''
         }
       },
 	  created(){

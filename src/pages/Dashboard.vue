@@ -93,6 +93,7 @@ export default {
 				extractNum : this.$rtl.chartParams.extractNum
 			}).then(resp => {
 				if (resp.data.code == 0) {
+					this.$rtl.companyName = resp.data.result.companyName;
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
