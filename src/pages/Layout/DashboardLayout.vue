@@ -7,13 +7,7 @@
           <p>浓度曲线</p>
         </template>
       </sidebar-link>
-      <sidebar-link v-if="$rtl.mapType === 'map-line'" to="/maps-line">
-        <i class="tim-icons icon-pin"></i>
-        <template v-if="!isRTL">
-          <p>地图</p>
-        </template>
-      </sidebar-link>
-	  <sidebar-link v-if="$rtl.mapType === 'map-wall'" to="/maps-wall">
+	  <sidebar-link :to="$rtl.mapType">
 	    <i class="tim-icons icon-pin"></i>
 	    <template v-if="!isRTL">
 	      <p>地图</p>
