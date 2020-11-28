@@ -45,7 +45,7 @@ import {
   Card
 } from "@/components/index";
 import {lazyAMapApiLoaderInstance} from 'vue-amap';
-let map,object3Dlayer,lines,lineGeo;
+let map,object3Dlayer,wall;
 export default{
 	data() {
 		return {
@@ -84,6 +84,7 @@ export default{
 					viewMode:'3D',
 					zooms:[2,20],
 					center: [117.284387,31.863847]
+					//center: [116.472804, 39.995725]
 				});
 				// 比例尺
 				map.addControl(new AMap.Scale());
@@ -116,9 +117,9 @@ export default{
 		refreshMapData() {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
 			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
-				dataType : 'map',
+				dataType : 'map-wall',
 				extractNum : this.$rtl.mapParams.extractNum,
-				red:  this.$rtl.mapParams.red
+				red : this.$rtl.mapParams.red
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
@@ -140,33 +141,34 @@ export default{
 			}
 		},
 		initMapData(index){
-			//连线对象
+			// 连线对象
 			object3Dlayer.clear();
-			lines = new AMap.Object3D.Line();
-			lineGeo = lines.geometry;
-			for (let i = 0; i < this.mapData.coordinates.length ; i++ ) {
+			for (let i = 0; i < this.mapData.coordinates.length - 1 ; i++ ) {
 				// 坐标
-				let coordinate = this.mapData.coordinates[i];
-				let lnglat = map.lngLatToGeodeticCoord(coordinate);
-				lnglat.x = AMap.Util.format(lnglat.x, 3);
-				lnglat.y = AMap.Util.format(lnglat.y, 3);
-				let center  = lnglat;
+				let coordinate_1 = this.mapData.coordinates[i];
+				let coordinate_2 = this.mapData.coordinates[i+1];
 				// 高度
-				let height = -1 * this.mapData.data[index][i] * this.$rtl.mapParams.hiehtFactor;
-				// 连线
-				lineGeo.vertices.push(center.x, center.y, 0);
+				let height = this.mapData.data[index][i+1] * this.$rtl.mapParams.hiehtFactor;
+				// 颜色
 				let color = this.mapData.colors[index][i];
-				lineGeo.vertexColors.push(color[0], color[1], color[2], 1);
-				lineGeo.vertices.push(center.x, center.y, height);
-				lineGeo.vertexColors.push(color[0], color[1], color[2], 1);
+				let wall = new AMap.Object3D.Wall({
+					path:  [
+						new AMap.LngLat(coordinate_2[0],coordinate_2[1]),
+						new AMap.LngLat(coordinate_1[0],coordinate_1[1])
+					],
+					height: height,
+					color: color
+				});
+				wall.backOrFront = 'both';
+				wall.transparent = true;
+				object3Dlayer.add(wall);
 				if(this.toCoordinate == null 
-					&& i == this.mapData.coordinates.length - 1){
-					// 设置地图坐标中心位置
-					this.toCoordinate = coordinate;
+					&& i == this.mapData.coordinates.length - 2){
+					// 切换要素时，将最新的坐标设置地图坐标中心位置
+					this.toCoordinate = coordinate_2;
 					map.panTo(this.toCoordinate);
 				}
 			}
-			object3Dlayer.add(lines);
 			this.mapData.activeIndex = index;
 		},
 		chooseFactors(index){

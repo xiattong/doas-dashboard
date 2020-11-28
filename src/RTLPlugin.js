@@ -19,7 +19,8 @@ export default {
 		  sysState: 'danger',
 		  gpsState: 'danger',
 		  hostIp: '127.0.0.1',
-		  companyName: ''
+		  companyName: '',
+		  mapType: ''
         }
       },
 	  created(){
