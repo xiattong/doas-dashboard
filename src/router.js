@@ -1,8 +1,8 @@
 import DashboardLayout from "@/pages/Layout/DashboardLayout.vue";
 
 import Dashboard from "@/pages/Dashboard.vue";
-import MapsLine from "@/pages/MapsLine.vue";
-import MapsWall from "@/pages/MapsWall.vue";
+import MapLine from "@/pages/MapLine.vue";
+import MapWall from "@/pages/MapWall.vue";
 
 
 const routes = [{
@@ -16,14 +16,14 @@ const routes = [{
       component: Dashboard
     },
     {
-      path: "maps-line",
+      path: "map-line",
       name: "地图",
-      component: MapsLine
+      component: MapLine
     },
 	{
-	  path: "maps-wall",
+	  path: "map-wall",
 	  name: "地图",
-	  component: MapsWall
+	  component: MapWall
 	}
   ]
 
