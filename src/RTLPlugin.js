@@ -20,7 +20,9 @@ export default {
 		  gpsState: 'danger',
 		  hostIp: '127.0.0.1',
 		  companyName: '',
-		  mapType: ''
+		  mapType: '',
+		  fileNameList: [],
+		  currentFileName: '读取最新'
         }
       },
 	  created(){

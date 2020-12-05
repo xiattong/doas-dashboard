@@ -7,6 +7,18 @@
       <div class="collapse navbar-collapse show text-left">
         <ul class="navbar-nav ml-auto">
 			<li class="search-bar input-group" >
+				<drop-down tag="div" class="file-select">
+				     <button aria-label="Success" data-toggle="dropdown" 
+						class="dropdown-toggle btn-rotate btn btn-success">
+				        {{ $rtl.currentFileName }}
+				     </button>
+				     <ul class="dropdown-menu">
+						<a href="#" @click="selectedFile('读取最新')" class="dropdown-item text-left">读取最新</a>
+						<a href="#" v-for="(option) in $rtl.fileNameList"
+							:key="option"
+							@click="selectedFile(option)" class="dropdown-item text-left">{{ option }}</a>
+				     </ul>
+				</drop-down>
 				<drop-down>
 					<base-button round icon :type="$rtl.sysState" data-toggle="dropdown" data-target="#sysState">
 						<i class="tim-icons icon-wifi"></i>
@@ -97,6 +109,8 @@
 	.tim-icons{margin-bottom: 10px;}
 	.modal-body{background-color: #f5f6fa;}
 	.dropdown-item{text-align: center;}
+	.btn-rotate{width: 220px;}
+	.file-select{margin-right: 20px;}
 	/*.modal.show .modal-dialog {
 	    -webkit-transform: translate(0, 5%);
 	}*/
@@ -126,6 +140,9 @@ export default{
 			this.$rtl.chartParams.refreshTimer = true;
 			this.$rtl.mapParams.refreshTimer = true;
 			this.searchModalVisible = false;
+		},
+		selectedFile(fileName){
+			this.$rtl.currentFileName = fileName;
 		}
 	}
 }

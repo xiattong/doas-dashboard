@@ -90,19 +90,23 @@ export default {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
 			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
 				dataType : 'chart',
-				extractNum : this.$rtl.chartParams.extractNum
+				extractNum : this.$rtl.chartParams.extractNum,
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.companyName = resp.data.result.companyName;
 					this.$rtl.mapType = resp.data.result.mapType;
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
+					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
 					this.bigLineChart.labels = resp.data.result.xAxis;
 					this.bigLineChart.allData = resp.data.result.data;
 					this.latestTime = resp.data.result.latestTime;
 					this.realTimeData = resp.data.result.realTimeData;
 					this.initBigChart(this.bigLineChart.activeIndex);
+				}else{
+					this.bigLineChart.chartData = {datasets: [{}]}
 				}
 			}).catch(err => {
 				console.log(err);

@@ -119,16 +119,20 @@ export default{
 			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
 				dataType : 'map-wall',
 				extractNum : this.$rtl.mapParams.extractNum,
-				red : this.$rtl.mapParams.red
+				red : this.$rtl.mapParams.red,
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
+					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.mapData.factors = resp.data.result.factors;
 					this.mapData.data = resp.data.result.data;
 					this.mapData.colors = resp.data.result.colors;
 					this.mapData.coordinates = resp.data.result.coordinates;
 					this.initMapData(this.mapData.activeIndex);
+				}else{
+					object3Dlayer.clear();
 				}
 			}).catch(err => {
 				console.log(err);
@@ -148,13 +152,13 @@ export default{
 				let coordinate_1 = this.mapData.coordinates[i];
 				let coordinate_2 = this.mapData.coordinates[i+1];
 				// 高度
-				let height = this.mapData.data[index][i+1] * this.$rtl.mapParams.hiehtFactor;
+				let height = this.mapData.data[index][i] * this.$rtl.mapParams.hiehtFactor;
 				// 颜色
 				let color = this.mapData.colors[index][i];
 				let wall = new AMap.Object3D.Wall({
 					path:  [
-						new AMap.LngLat(coordinate_2[0],coordinate_2[1]),
-						new AMap.LngLat(coordinate_1[0],coordinate_1[1])
+						new AMap.LngLat(coordinate_1[0],coordinate_1[1]),
+						new AMap.LngLat(coordinate_2[0],coordinate_2[1])
 					],
 					height: height,
 					color: color
