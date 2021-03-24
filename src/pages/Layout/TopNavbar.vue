@@ -87,11 +87,6 @@
 						</div>
 						<div class="row">
 						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="红色浓度值" type="number"
-								v-model="$rtl.mapParams.red">
-							</base-input>
-						  </div>
-						  <div class="col-md-6 pr-md-6 text-left">
 							<base-input label="线条高度调参"  type="number"
 								v-model="$rtl.mapParams.hiehtFactor">
 							</base-input>

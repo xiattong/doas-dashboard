@@ -14,10 +14,10 @@
 			</div>
 		</div>
 		<div id="colorScalar">
-			<div id="color1">{{this.$rtl.mapParams.red * (1/4)}}</div>
-			<div id="color2">{{this.$rtl.mapParams.red * (2/4)}}</div>
-			<div id="color3">{{this.$rtl.mapParams.red * (3/4)}}</div>
-			<div id="color4">{{this.$rtl.mapParams.red}}</div>
+			<div id="color1">{{this.mapData.red * (1/4)}}</div>
+			<div id="color2">{{this.mapData.red * (2/4)}}</div>
+			<div id="color3">{{this.mapData.red * (3/4)}}</div>
+			<div id="color4">{{this.mapData.red}}</div>
 		</div>
 	</div>
   </div>
@@ -60,7 +60,9 @@ export default{
 				// 颜色 二维数组
 				colors: [],
 				// 坐标
-				coordinates: []
+				coordinates: [],
+				// red值
+				red: 0
 			}
 		}
 	},
@@ -118,7 +120,6 @@ export default{
 			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
-				red:  this.$rtl.mapParams.red,
 				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
@@ -129,6 +130,7 @@ export default{
 					this.mapData.data = resp.data.result.data;
 					this.mapData.colors = resp.data.result.colors;
 					this.mapData.coordinates = resp.data.result.coordinates;
+					this.mapData.red = resp.data.result.redList[activeIndex];
 					this.initMapData(this.mapData.activeIndex);
 				}else{
 					object3Dlayer.clear();

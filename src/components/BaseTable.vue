@@ -7,7 +7,7 @@
         </slot>
       </tr>
     </thead>
-    <tbody :class="tbodyClasses">
+    <!--<tbody :class="tbodyClasses">
       <tr v-for="(item, index) in data" :key="index">
         <slot :row="item">
           <td v-for="(column, index) in columns"
@@ -17,7 +17,7 @@
           </td>
         </slot>
       </tr>
-    </tbody>
+    </tbody>-->
   </table>
 </template>
 <script>
