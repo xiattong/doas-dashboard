@@ -11,9 +11,9 @@ export default {
 		  },
 		  mapParams:{
 			  extractNum: 0,  //抽取数量
-			  refreshSecond: 10, //刷新时间 单位：秒，3
-			  red: 500, //色等值
-			  hiehtFactor: 300 ,//高度参数
+			  refreshSecond: 3, //刷新时间 单位：秒，3
+			  redList: 0, //色等值
+			  hiehtFactor: 120 ,//高度参数
 			  refreshTimer: false //定时器刷新控制
 		  },
 		  sysState: 'danger',

@@ -55,8 +55,10 @@ export default{
 				activeIndex: 0,
 				// 因子
 				factors:[],
-				// 数值/高度 二维数组
+				// 数值 二维数组
 				data: [],
+				// 高度 二维数组
+				dataHigh: [],
 				// 颜色 二维数组
 				colors: [],
 				// 坐标
@@ -120,6 +122,7 @@ export default{
 			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
+				redList : this.$rtl.mapParams.redList,
 				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
@@ -128,9 +131,10 @@ export default{
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.mapData.factors = resp.data.result.factors;
 					this.mapData.data = resp.data.result.data;
+					this.mapData.dataHigh = resp.data.result.dataHigh;
 					this.mapData.colors = resp.data.result.colors;
 					this.mapData.coordinates = resp.data.result.coordinates;
-					this.mapData.red = resp.data.result.redList[activeIndex];
+					this.mapData.red = resp.data.result.redList[this.mapData.activeIndex];
 					this.initMapData(this.mapData.activeIndex);
 				}else{
 					object3Dlayer.clear();
@@ -158,7 +162,7 @@ export default{
 				lnglat.y = AMap.Util.format(lnglat.y, 3);
 				let center  = lnglat;
 				// 高度
-				let height = -1 * this.mapData.data[index][i] * this.$rtl.mapParams.hiehtFactor;
+				let height = -1 * this.mapData.dataHigh[index][i] * this.$rtl.mapParams.hiehtFactor;
 				// 连线
 				lineGeo.vertices.push(center.x, center.y, 0);
 				// 颜色

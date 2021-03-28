@@ -36,10 +36,13 @@
 					</ul>
 				</drop-down>
 				<base-button round icon type="primary" id="setting"
-					@click="searchModalVisible = true"
-					data-toggle="modal" data-target="#searchModal">
+					@click="searchModalVisible = true" data-toggle="modal" data-target="#searchModal">
 					<i class="tim-icons icon-settings-gear-63"></i>
 				</base-button>
+				<base-button round icon type="info" data-toggle="modal" @click="printscreen" id="printscreen">
+					<i class="tim-icons icon-scissors"></i>
+				</base-button>
+				<div id="imgBox" hidden="hidden"></div>
 			</li>
 			<modal :show.sync="searchModalVisible"
 			       id="searchModal"
@@ -86,9 +89,16 @@
 						  </div>
 						</div>
 						<div class="row">
-						  <div class="col-md-6 pr-md-6 text-left">
+						  <div class="col-md-12 pr-md-12 text-left">
 							<base-input label="线条高度调参"  type="number"
 								v-model="$rtl.mapParams.hiehtFactor">
+							</base-input>
+						  </div>
+						</div>
+						<div class="row">
+						  <div class="col-md-12 pr-md-12 text-left">
+							<base-input label="红色色等值(0:表示系统处理; 如需指定,请与因子一一对应,使用英文逗号隔开)"  type="string"
+								v-model="$rtl.mapParams.redList">
 							</base-input>
 						  </div>
 						</div>
@@ -101,46 +111,60 @@
 </template>
 <style>
 	#setting{margin-left: 10px !important;}
+	#printscreen{margin-left: 1.25rem;}
 	.tim-icons{margin-bottom: 10px;}
 	.modal-body{background-color: #f5f6fa;}
 	.dropdown-item{text-align: center;}
 	.btn-rotate{width: 220px;}
-	.file-select{margin-right: 20px;}
+	.file-select{margin-right: 1.25rem;}
 	/*.modal.show .modal-dialog {
 	    -webkit-transform: translate(0, 5%);
 	}*/
 </style>
-
 <script>
-import Modal from "@/components/Modal.vue";
-import BaseButton from '@/components/BaseButton';
-import {
-  Card,
-  BaseInput
-} from "@/components/index";
-export default{
-	components:{
-	  Modal,
+	import Modal from "@/components/Modal.vue";
+	import BaseButton from '@/components/BaseButton';
+	import html2canvas from 'html2canvas'
+	import {
 	  Card,
-	  BaseInput,
-	  BaseButton
-	},
-	data() {
-	  return {
-		  searchModalVisible: false
-	  };
-	},
-	methods:{
-		closeModal(){
-			this.$rtl.chartParams.refreshTimer = true;
-			this.$rtl.mapParams.refreshTimer = true;
-			this.searchModalVisible = false;
+	  BaseInput
+	} from "@/components/index";
+	export default{
+		components:{
+		  Modal,
+		  Card,
+		  BaseInput,
+		  BaseButton
 		},
-		selectedFile(fileName){
-			this.$rtl.currentFileName = fileName;
+		data() {
+		  return {
+			  searchModalVisible: false
+		  };
+		},
+		methods:{
+			closeModal(){
+				this.$rtl.chartParams.refreshTimer = true;
+				this.$rtl.mapParams.refreshTimer = true;
+				this.searchModalVisible = false;
+			},
+			selectedFile(fileName){
+				this.$rtl.currentFileName = fileName;
+			},
+			//截图方法
+			printscreen(){
+				html2canvas(document.body).then(function(canvas){
+					//截图用img元素承装，显示在页面的上
+					let img = new Image();
+					img.src = canvas.toDataURL('image/jpeg');// toDataURL :图片格式转成 base64
+					document.getElementById('imgBox').removeChild;
+					document.getElementById('imgBox').appendChild(img);
+					//如果你需要下载截图，可以使用a标签进行下载
+					let a = document.createElement('a');
+					a.href = canvas.toDataURL('image/jpeg');
+					a.download = 'imgBox';
+					a.click();
+				})
+			}
 		}
 	}
-}
 </script>
-<style>
-</style>
