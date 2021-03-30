@@ -12,7 +12,8 @@ export default {
 		  mapParams:{
 			  extractNum: 0,  //抽取数量
 			  refreshSecond: 3, //刷新时间 单位：秒，3
-			  redList: 0, //色等值
+			  redList: '', //色等值
+			  redListStr: '',
 			  hiehtFactor: 120 ,//高度参数
 			  refreshTimer: false //定时器刷新控制
 		  },

@@ -98,7 +98,7 @@
 						<div class="row">
 						  <div class="col-md-12 pr-md-12 text-left">
 							<base-input label="红色色等值(0:表示系统处理; 如需指定,请与因子一一对应,使用英文逗号隔开)"  type="string"
-								v-model="$rtl.mapParams.redList">
+								v-model="$rtl.mapParams.redListStr">
 							</base-input>
 						  </div>
 						</div>

@@ -122,13 +122,14 @@ export default{
 			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
-				redList : this.$rtl.mapParams.redList,
+				redList : this.$rtl.mapParams.redListStr,
 				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
+					this.$rtl.mapParams.redListStr = resp.data.result.redListStr;
 					this.mapData.factors = resp.data.result.factors;
 					this.mapData.data = resp.data.result.data;
 					this.mapData.dataHigh = resp.data.result.dataHigh;
