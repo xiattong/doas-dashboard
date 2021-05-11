@@ -10,19 +10,6 @@
                                 <h5 class="card-category">浓度曲线图</h5>
                             </template>
                         </div>
-                        <div class="col-sm-9">
-                            <div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
-                                <template>
-                                    <label v-for="(option, index) in bigLineChart.bigLineChartCategories" 
-										:key="option" class="btn btn-success btn-sm btn-simple"
-										:class="{active:bigLineChart.activeIndex === index}" :id="index">
-                                        <input type="radio" @click="initBigChart(index)" name="options" autocomplete="off" 
-											:checked="bigLineChart.activeIndex === index">
-                                        {{ option }}
-                                    </label>
-                                </template>
-                            </div>
-                        </div>
                     </div>
                 </template>
                 <line-chart class="chart-area" ref="bigChart" chart-id="big-line-chart" :chart-data="bigLineChart.chartData"
@@ -76,12 +63,10 @@ export default {
 				bigLineChartCategories: [],
 				labels: [],
 				allData: [],
-				activeIndex: 0,
-				chartData: {
-					datasets: [{}]
-				},
+				factorColors: [],
+				chartData: null,
 				extraOptions: chartConfigs.purpleChartOptions,
-				gradientColors: config.colors.primaryGradient,
+				gradientColors: config.colors.primaryGradient
 			}
 		}
 	},
@@ -100,13 +85,14 @@ export default {
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
+					this.bigLineChart.factorColors = resp.data.result.factorColors;
 					this.bigLineChart.labels = resp.data.result.xAxis;
 					this.bigLineChart.allData = resp.data.result.data;
 					this.latestTime = resp.data.result.latestTime;
 					this.realTimeData = resp.data.result.realTimeData;
-					this.initBigChart(this.bigLineChart.activeIndex);
+					this.initBigChart(this.bigLineChart.bigLineChartCategories.length);
 				}else{
-					this.bigLineChart.chartData = {datasets: [{}]}
+					this.bigLineChart.chartData = null;
 				}
 			}).catch(err => {
 				console.log(err);
@@ -119,27 +105,29 @@ export default {
 			}
 		},
 		initBigChart(index) {
-			let chartData = {
-				datasets: [{
-					fill: true,
-					borderColor: config.colors.primary,
-					borderWidth: 1,
-					borderDash: [],
-					borderDashOffset: 0.0,
-					pointBackgroundColor: config.colors.primary,
-					pointBorderColor: 'rgba(255,255,255,0)',
-					pointHoverBackgroundColor: config.colors.primary,
-					pointRadius: 1,
-					pointHoverRadius: 7,
-					pointBorderWidth: 1,
-					pointHoverBorderWidth: 1,
-					data: this.bigLineChart.allData[index]
-				}],
-				labels: this.bigLineChart.labels
+			const dataset = [];
+			for (let i = 0 ; i < index ; i ++) {
+				dataset.push(
+					{
+						label: this.bigLineChart.bigLineChartCategories[i],
+						borderWidth: 1,
+						pointRadius: 1,
+						pointBorderWidth: 1,
+						borderColor: this.bigLineChart.factorColors[i],
+						pointBackgroundColor: this.bigLineChart.factorColors[i],
+						pointHoverBackgroundColor: this.bigLineChart.factorColors[i],
+						pointBorderColor: 'rgba(255,255,255,0)',
+						data: this.bigLineChart.allData[i]
+					}
+				)
 			}
-			this.$refs.bigChart.updateGradients(chartData);
+			
+			let chartData = {
+				labels: this.bigLineChart.labels,
+				datasets: dataset
+			}
 			this.bigLineChart.chartData = chartData;
-			this.bigLineChart.activeIndex = index;
+			this.$refs.bigChart.updateGradients(chartData);
 		}
 	},
 	created() {
