@@ -20,6 +20,7 @@ export default {
 		  sysState: 'danger',
 		  gpsState: 'danger',
 		  hostIp: '127.0.0.1',
+		  port: '8099',
 		  companyName: '',
 		  mapType: '',
 		  fileNameList: [],

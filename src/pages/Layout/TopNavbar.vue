@@ -45,64 +45,64 @@
 				<div id="imgBox" hidden="hidden"></div>
 			</li>
 			<modal :show.sync="searchModalVisible"
-			       id="searchModal"
-			       :centered="false"
-			       :show-close="true">
-				   <base-button link @click="closeModal()" class="close">
-					   <i class="tim-icons icon-simple-remove"></i>
-				   </base-button>
-				   <card>
-					   <div class="row">
-						  <div class="col-md-12 pr-md-12 text-left">
-							  <h5 class="title">曲线图参数设置</h5>
-						  </div>
-						</div>
-						<div class="row">
-						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="最大数据抽取数量(0:表示全量抽取)" type="number"
-								v-model="$rtl.chartParams.extractNum">
-							</base-input>
-						  </div>
-						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="数据刷新时间(秒)"  type="number"
-								v-model="$rtl.chartParams.refreshSecond">
-							</base-input>
-						  </div>
-						</div>
-					</card>
-					<card>
-					   <div class="row">
-						  <div class="col-md-12 pr-md-12 text-left">
-							  <h5 class="title">地图参数设置</h5>
-						  </div>
-						</div>
-						<div class="row">
-						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="最大数据抽取数量(0:表示全量抽取)" type="number"
-								v-model="$rtl.mapParams.extractNum">
-							</base-input>
-						  </div>
-						  <div class="col-md-6 pr-md-6 text-left">
-							<base-input label="数据刷新时间(秒)"  type="number"
-								v-model="$rtl.mapParams.refreshSecond">
-							</base-input>
-						  </div>
-						</div>
-						<div class="row">
-						  <div class="col-md-12 pr-md-12 text-left">
-							<base-input label="线条高度调参"  type="number"
-								v-model="$rtl.mapParams.hiehtFactor">
-							</base-input>
-						  </div>
-						</div>
-						<div class="row">
-						  <div class="col-md-12 pr-md-12 text-left">
-							<base-input label="红色色等值(0:表示系统处理; 如需指定,请与因子一一对应,使用英文逗号隔开)"  type="string"
-								v-model="$rtl.mapParams.redListStr">
-							</base-input>
-						  </div>
-						</div>
-					</card>
+			   id="searchModal"
+			   :centered="true"
+			   :show-close="true">
+			   <base-button link @click="closeModal()" class="close">
+				   <i class="tim-icons icon-simple-remove"></i>
+			   </base-button>
+			   <card>
+				   <div class="row">
+					  <div class="col-md-12 pr-md-12 text-left">
+						  <h5 class="title">曲线图参数设置</h5>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-md-6 pr-md-6 text-left">
+						<base-input label="最大数据抽取数量(0:表示全量抽取)" type="number"
+							v-model="$rtl.chartParams.extractNum">
+						</base-input>
+					  </div>
+					  <div class="col-md-6 pr-md-6 text-left">
+						<base-input label="数据刷新时间(秒)"  type="number"
+							v-model="$rtl.chartParams.refreshSecond">
+						</base-input>
+					  </div>
+					</div>
+				</card>
+				<card>
+				   <div class="row">
+					  <div class="col-md-12 pr-md-12 text-left">
+						  <h5 class="title">地图参数设置</h5>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-md-6 pr-md-6 text-left">
+						<base-input label="最大数据抽取数量(0:表示全量抽取)" type="number"
+							v-model="$rtl.mapParams.extractNum">
+						</base-input>
+					  </div>
+					  <div class="col-md-6 pr-md-6 text-left">
+						<base-input label="数据刷新时间(秒)"  type="number"
+							v-model="$rtl.mapParams.refreshSecond">
+						</base-input>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-md-12 pr-md-12 text-left">
+						<base-input label="线条高度调参"  type="number"
+							v-model="$rtl.mapParams.hiehtFactor">
+						</base-input>
+					  </div>
+					</div>
+					<div class="row">
+					  <div class="col-md-12 pr-md-12 text-left">
+						<base-input label="红色色等值(0:表示系统处理; 如需指定,请与因子一一对应,使用英文逗号隔开)"  type="string"
+							v-model="$rtl.mapParams.redListStr">
+						</base-input>
+					  </div>
+					</div>
+				</card>
 			</modal>
         </ul>
       </div>
@@ -117,9 +117,11 @@
 	.dropdown-item{text-align: center;}
 	.btn-rotate{width: 220px;}
 	.file-select{margin-right: 1.25rem;}
-	/*.modal.show .modal-dialog {
+	.modal.show .modal-dialog {
 	    -webkit-transform: translate(0, 5%);
-	}*/
+		-ms-transform: translate(0, 5%);
+		transform: translate(0, 5%);
+	}
 </style>
 <script>
 	import Modal from "@/components/Modal.vue";

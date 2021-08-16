@@ -41,6 +41,7 @@
 </style>
 <script src="https://webapi.amap.com/maps?v=1.4.15&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
 <script>
+import BaseAlert from '@/components/BaseAlert';
 import {
   Card
 } from "@/components/index";
@@ -119,7 +120,7 @@ export default{
 		},
 		refreshMapData() {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
-			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
+			this.axios.post('http://'+this.$rtl.hostIp + ':' + this.$rtl.port +'/doas/initData',{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
@@ -130,6 +131,7 @@ export default{
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.$rtl.mapParams.redListStr = resp.data.result.redListStr;
+					console.log(this.$rtl.fileNameList);
 					this.mapData.factors = resp.data.result.factors;
 					this.mapData.data = resp.data.result.data;
 					this.mapData.dataHigh = resp.data.result.dataHigh;
@@ -141,6 +143,7 @@ export default{
 					object3Dlayer.clear();
 				}
 			}).catch(err => {
+				
 				console.log(err);
 			})
 			// 刷新定时器

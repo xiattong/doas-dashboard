@@ -120,7 +120,7 @@ export default{
 		},
 		refreshMapData() {
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
-			this.axios.post('http://'+this.$rtl.hostIp+':8090/doas/initData',{
+			this.axios.post('http://'+this.$rtl.hostIp + ':' + this.$rtl.port + '/doas/initData',{
 				dataType : 'map-wall',
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
