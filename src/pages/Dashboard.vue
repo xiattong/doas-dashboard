@@ -21,16 +21,34 @@
 	<div class="row">
 		<div class="col-md-12">
 			<card>
-				<template slot="header">
-				  <h5 class="card-category">
-					  最新时刻&nbsp;&nbsp;|&nbsp;&nbsp;采集因子 : 采集值 单位
-				  </h5>
-				</template>
-				<base-alert type="success">
-				  <span style="font-size: 0.70rem;">
-					{{latestTime}}&nbsp;&nbsp;|&nbsp;&nbsp;{{realTimeData}}
-				  </span>
-				</base-alert>
+				<table class="table tablesorter" :class="tableClass">
+				  <thead :class="theadClasses">
+				    <tr>
+				      <slot name="columns">
+						<th class="text-left" style="width: 5%;">{{this.latestTime}}</th>
+						<th class="text-left" v-for="column in this.bigLineChart.bigLineChartCategories" :key="column"> {{ column }}</th> 
+				      </slot>
+				    </tr>
+				  </thead>
+				  <tbody :class="tbodyClasses">
+				    <tr>
+				     <td class="text-left">实时数据</td>
+				     <td class="text-left" v-for="item in realTimeData" :key="item"> {{ item }}</td> 
+				    </tr>
+					<tr>
+					 <td class="text-left">平均值</td>
+					 <td class="text-left" v-for="item in averageData" :key="item"> {{ item }}</td> 
+					</tr>
+					<tr>
+					 <td class="text-left">最大值</td>
+					 <td class="text-left" v-for="item in maxData" :key="item"> {{ item }}</td> 
+					</tr>
+					<tr>
+					 <td class="text-left">最小值</td>
+					 <td class="text-left" v-for="item in minData" :key="item"> {{ item }}</td> 
+					</tr>
+				  </tbody>
+				</table>
 			</card>
 		</div>
 	</div>
@@ -41,10 +59,10 @@ import {
 	Card
 } from "@/components/index";
 
+import BaseAlert from '@/components/BaseAlert.vue';
 import LineChart from '@/components/Charts/LineChart';
 import * as chartConfigs from '@/components/Charts/config';
 import config from '@/config';
-import BaseAlert from '@/components/BaseAlert';
 
 
 export default {
@@ -59,6 +77,9 @@ export default {
 			timer: null,
 			latestTime: '',
 			realTimeData: '',
+			averageData: '',
+			maxData: '',
+			minData: '',
 			bigLineChart: {
 				bigLineChartCategories: [],
 				labels: [],
@@ -76,7 +97,8 @@ export default {
 			this.axios.post('http://'+this.$rtl.hostIp+ ':' + this.$rtl.port + '/doas/initData',{
 				dataType : 'chart',
 				extractNum : this.$rtl.chartParams.extractNum,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
+				fileValidSeconds: this.$rtl.commpnParams.fileValidSeconds
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.companyName = resp.data.result.companyName;
@@ -90,6 +112,9 @@ export default {
 					this.bigLineChart.allData = resp.data.result.data;
 					this.latestTime = resp.data.result.latestTime;
 					this.realTimeData = resp.data.result.realTimeData;
+					this.averageData = resp.data.result.averageData;
+					this.maxData = resp.data.result.maxData;
+					this.minData = resp.data.result.minData;
 					this.initBigChart(this.bigLineChart.bigLineChartCategories.length);
 				}else{
 					this.bigLineChart.chartData = null;

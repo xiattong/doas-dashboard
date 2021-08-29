@@ -41,12 +41,12 @@
 </style>
 <script src="https://webapi.amap.com/maps?v=1.4.15&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
 <script>
-import BaseAlert from '@/components/BaseAlert';
 import {
   Card
 } from "@/components/index";
 import {lazyAMapApiLoaderInstance} from 'vue-amap';
-let map,object3Dlayer,lines,lineGeo;
+let map,object3Dlayer,lines,lineGeo,startMarker,endMarker,polyline;
+
 export default{
 	data() {
 		return {
@@ -110,6 +110,51 @@ export default{
 					showControlButton: true,
 					showZoomBar: false
 				}));
+				
+				// 绘制轨迹
+				polyline = new AMap.Polyline({
+					map: map,
+					showDir:true,
+					strokeColor: "#28F",  //线颜色
+					// strokeOpacity: 1,     //线透明度
+					strokeWeight: 6,      //线宽
+					strokeStyle: "solid"  //线样式
+				});
+				
+				// 起点标记
+				let startIcon = new AMap.Icon({
+					// 图标尺寸
+					size: new AMap.Size(25, 34),
+					// 图标的取图地址
+					image: 'http://a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
+					// 图标所用图片大小
+					imageSize: new AMap.Size(135, 40),
+					// 图标取图偏移量
+					imageOffset: new AMap.Pixel(-9, -3)
+				});
+				
+				// 终点标记
+				let endIcon = new AMap.Icon({
+					size: new AMap.Size(25, 34),
+					image: 'http://a.amap.com/jsapi_demos/static/demo-center/icons/dir-marker.png',
+					imageSize: new AMap.Size(135, 40),
+					imageOffset: new AMap.Pixel(-95, -3)
+				});
+				
+				// 将 icon 传入 marker
+				startMarker = new AMap.Marker({
+					icon: startIcon,
+					offset: new AMap.Pixel(-13, -30)
+				});
+				
+				// 将 icon 传入 marker
+				endMarker = new AMap.Marker({
+					icon: endIcon,
+					offset: new AMap.Pixel(-13, -30)
+				});
+				
+				map.add([startMarker, endMarker]);
+				
 				// 添加 Object3DLayer 图层，用于添加 3DObject 对象
 				setTimeout(this.initObject3DLayer,  3 * 1000);
 			});
@@ -124,14 +169,14 @@ export default{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
+				fileValidSeconds: this.$rtl.commpnParams.fileValidSeconds
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.$rtl.mapParams.redListStr = resp.data.result.redListStr;
-					console.log(this.$rtl.fileNameList);
 					this.mapData.factors = resp.data.result.factors;
 					this.mapData.data = resp.data.result.data;
 					this.mapData.dataHigh = resp.data.result.dataHigh;
@@ -183,6 +228,12 @@ export default{
 			}
 			object3Dlayer.add(lines);
 			this.mapData.activeIndex = index;
+			// 起点
+			startMarker.setPosition(this.mapData.coordinates[0]);
+			// 重点
+			endMarker.setPosition(this.mapData.coordinates[this.mapData.coordinates.length - 1]);
+			// 轨迹
+			polyline.setPath(this.mapData.coordinates);
 		},
 		chooseFactors(index){
 			this.toCoordinate = null;

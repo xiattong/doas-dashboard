@@ -51,6 +51,20 @@
 			   <base-button link @click="closeModal()" class="close">
 				   <i class="tim-icons icon-simple-remove"></i>
 			   </base-button>
+			    <!--<card>
+				  <div class="row">
+					  <div class="col-md-12 pr-md-12 text-left">
+						  <h5 class="title">读取前 n 秒以内的文件(0:表示只读取一个文件)</h5>
+					  </div>
+				   </div>
+				   <div class="row">
+					   <div class="col-md-12 pr-md-12 text-left">
+						  <base-input label="" type="number"
+							v-model="$rtl.commpnParams.fileValidSeconds">
+						  </base-input>
+					   </div>
+				   </div>
+			   </card>-->
 			   <card>
 				   <div class="row">
 					  <div class="col-md-12 pr-md-12 text-left">
