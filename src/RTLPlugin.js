@@ -4,9 +4,6 @@ export default {
       data() {
         return {
           isRTL: false,
-		  commpnParams:{
-			  fileValidSeconds: 0 //读取n分钟以内的文件
-		  },
 		  chartParams:{
 			  extractNum: 100,  //抽取数量
 			  refreshSecond: 1,  //刷新时间 单位：秒,1

@@ -169,8 +169,7 @@ export default{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
-				fileValidSeconds: this.$rtl.commpnParams.fileValidSeconds
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';

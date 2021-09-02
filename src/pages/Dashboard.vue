@@ -25,8 +25,8 @@
 				  <thead :class="theadClasses">
 				    <tr>
 				      <slot name="columns">
-						<th class="text-left" style="width: 5%;">{{this.latestTime}}</th>
-						<th class="text-left" v-for="column in this.bigLineChart.bigLineChartCategories" :key="column"> {{ column }}</th> 
+						<th class="text-left" style="width: 8%;">{{this.latestTime}}</th>
+						<th class="text-left" v-for="column in this.bigLineChart.bigLineChartCategoriesCopy" :key="column"> {{ column }}</th> 
 				      </slot>
 				    </tr>
 				  </thead>
@@ -59,7 +59,6 @@ import {
 	Card
 } from "@/components/index";
 
-import BaseAlert from '@/components/BaseAlert.vue';
 import LineChart from '@/components/Charts/LineChart';
 import * as chartConfigs from '@/components/Charts/config';
 import config from '@/config';
@@ -68,8 +67,7 @@ import config from '@/config';
 export default {
 	components: {
 		Card,
-		LineChart,
-		BaseAlert
+		LineChart
 	},
 	data() {
 		return {
@@ -82,6 +80,7 @@ export default {
 			minData: '',
 			bigLineChart: {
 				bigLineChartCategories: [],
+				bigLineChartCategoriesCopy: [],
 				labels: [],
 				allData: [],
 				factorColors: [],
@@ -97,8 +96,7 @@ export default {
 			this.axios.post('http://'+this.$rtl.hostIp+ ':' + this.$rtl.port + '/doas/initData',{
 				dataType : 'chart',
 				extractNum : this.$rtl.chartParams.extractNum,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
-				fileValidSeconds: this.$rtl.commpnParams.fileValidSeconds
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
 			}).then(resp => {
 				if (resp.data.code == 0) {
 					this.$rtl.companyName = resp.data.result.companyName;
@@ -107,6 +105,9 @@ export default {
 					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
+					if (this.bigLineChart.bigLineChartCategoriesCopy.length == 0) {
+						this.bigLineChart.bigLineChartCategoriesCopy = resp.data.result.factors;
+					}
 					this.bigLineChart.factorColors = resp.data.result.factorColors;
 					this.bigLineChart.labels = resp.data.result.xAxis;
 					this.bigLineChart.allData = resp.data.result.data;
