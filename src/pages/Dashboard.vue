@@ -33,19 +33,19 @@
 				  <tbody :class="tbodyClasses">
 				    <tr>
 				     <td class="text-left">实时数据</td>
-				     <td class="text-left" v-for="item in realTimeData" :key="item"> {{ item }}</td> 
+				     <td class="text-left" v-for="item1 in realTimeData"> {{item1}}</td> 
 				    </tr>
 					<tr>
 					 <td class="text-left">平均值</td>
-					 <td class="text-left" v-for="item in averageData" :key="item"> {{ item }}</td> 
+					 <td class="text-left" v-for="item2 in averageData"> {{item2}}</td> 
 					</tr>
 					<tr>
 					 <td class="text-left">最大值</td>
-					 <td class="text-left" v-for="item in maxData" :key="item"> {{ item }}</td> 
+					 <td class="text-left" v-for="item3 in maxData"> {{item3}}</td> 
 					</tr>
 					<tr>
 					 <td class="text-left">最小值</td>
-					 <td class="text-left" v-for="item in minData" :key="item"> {{ item }}</td> 
+					 <td class="text-left" v-for="item4 in minData"> {{item4}}</td> 
 					</tr>
 				  </tbody>
 				</table>
