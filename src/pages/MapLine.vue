@@ -169,20 +169,25 @@ export default{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName
+				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
+				timeRange: ''
 			}).then(resp => {
-				if (resp.data.code == 0) {
-					this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
-					this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
+				if (resp.data.code != -1) {
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
-					this.$rtl.mapParams.redListStr = resp.data.result.redListStr;
-					this.mapData.factors = resp.data.result.factors;
-					this.mapData.data = resp.data.result.data;
-					this.mapData.dataHigh = resp.data.result.dataHigh;
-					this.mapData.colors = resp.data.result.colors;
-					this.mapData.coordinates = resp.data.result.coordinates;
-					this.mapData.red = resp.data.result.redList[this.mapData.activeIndex];
-					this.initMapData(this.mapData.activeIndex);
+					if (resp.data.code == 1) {
+						this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
+						this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
+						this.$rtl.mapParams.redListStr = resp.data.result.redListStr;
+						this.mapData.factors = resp.data.result.factors;
+						this.mapData.data = resp.data.result.data;
+						this.mapData.dataHigh = resp.data.result.dataHigh;
+						this.mapData.colors = resp.data.result.colors;
+						this.mapData.coordinates = resp.data.result.coordinates;
+						this.mapData.red = resp.data.result.redList[this.mapData.activeIndex];
+						this.initMapData(this.mapData.activeIndex);
+					} else {
+						object3Dlayer.clear();
+					}
 				}else{
 					object3Dlayer.clear();
 				}

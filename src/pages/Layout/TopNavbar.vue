@@ -126,7 +126,7 @@
 <script>
 	import Modal from "@/components/Modal.vue";
 	import BaseButton from '@/components/BaseButton';
-	import html2canvas from 'html2canvas'
+	import html2canvas from 'html2canvas';
 	import {
 	  Card,
 	  BaseInput
