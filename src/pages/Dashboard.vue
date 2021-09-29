@@ -5,7 +5,7 @@
             <card type="chart">
                 <template slot="header">
                     <div class="row">
-                        <div class="col-sm-12 text-right">
+                        <div class="col-sm-12 text-left">
                             <template>
                                 <LayDate @selectedTime="selectedTime" :oldDate="this.$rtl.timeRange" />
                             </template>
