@@ -33,6 +33,7 @@ import Notify from "@/components/NotificationPlugin";
 import i18n from "./i18n"
 import SideBar from "@/components/SidebarPlugin";
 import VueAMap from 'vue-amap';
+import ElementUI from 'element-ui';
 
 Vue.config.productionTip = false;
 
@@ -54,6 +55,7 @@ Vue.use(RTLPlugin);
 Vue.use(SideBar);
 Vue.use(Notify);
 Vue.use(VueAMap);
+Vue.use(ElementUI);
 VueAMap.initAMapApiLoader({
   key: '24eab6be67592f28a28b0df41307192f',
   plugin: [

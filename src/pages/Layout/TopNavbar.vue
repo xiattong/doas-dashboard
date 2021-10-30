@@ -13,10 +13,20 @@
 				        {{ $rtl.currentFileName }}
 				     </button>
 				     <ul class="dropdown-menu">
-						<a href="#" @click="selectedFile('读取最新')" class="dropdown-item text-left">读取最新</a>
-						<a href="#" v-for="(option) in $rtl.fileNameList"
-							:key="option"
-							@click="selectedFile(option)" class="dropdown-item text-left">{{ option }}</a>
+						<div>
+							<el-checkbox-group v-model="checkList" @change="changeNew()">
+							   <el-checkbox label="读取最新																																																					"></el-checkbox>
+							   <el-checkbox v-for="(option) in $rtl.fileNameList" :key="option" :label="option"></el-checkbox>
+							 </el-checkbox-group>
+						</div>
+						 <!-- <div>
+						   <base-checkbox class="checkbox-file dropdown-item text-left" :checked="true" @click="selectedFile('读取最新')">
+						       读取最新
+						   </base-checkbox>
+						   <base-checkbox class="checkbox-file dropdown-item text-left" v-for="(option) in $rtl.fileNameList" :key="option">
+						       {{ option }}
+						   </base-checkbox>
+						 </div> -->
 				     </ul>
 				</drop-down>
 				<drop-down>
@@ -114,7 +124,7 @@
 	#printscreen{margin-left: 1.25rem;}
 	.tim-icons{margin-bottom: 10px;}
 	.modal-body{background-color: #f5f6fa;}
-	.dropdown-item{text-align: center;}
+	.dropdown-item{text-align: center; margin-left: 10px;}
 	.btn-rotate{width: 220px;}
 	.file-select{margin-right: 1.25rem;}
 	.modal.show .modal-dialog {
@@ -140,10 +150,14 @@
 		},
 		data() {
 		  return {
-			  searchModalVisible: false
+			  searchModalVisible: false,
+			  checkList:[]
 		  };
 		},
 		methods:{
+			changeNew(){
+				console.log(this.checkList)
+			},
 			closeModal(){
 				this.$rtl.chartParams.refreshTimer = true;
 				this.$rtl.mapParams.refreshTimer = true;
