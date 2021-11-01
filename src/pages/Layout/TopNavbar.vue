@@ -8,25 +8,14 @@
         <ul class="navbar-nav ml-auto">
 			<li class="search-bar input-group" >
 				<drop-down tag="div" class="file-select">
-				     <button aria-label="Success" data-toggle="dropdown" 
-						class="dropdown-toggle btn-rotate btn btn-success">
-				        {{ $rtl.currentFileName }}
+				     <button aria-label="Success" data-toggle="dropdown" class="dropdown-toggle btn-rotate btn btn-success">
+				        {{ selectFileTip }}
 				     </button>
-				     <ul class="dropdown-menu">
-						<div>
-							<el-checkbox-group v-model="checkList" @change="changeNew()">
-							   <el-checkbox label="读取最新																																																					"></el-checkbox>
-							   <el-checkbox v-for="(option) in $rtl.fileNameList" :key="option" :label="option"></el-checkbox>
-							 </el-checkbox-group>
-						</div>
-						 <!-- <div>
-						   <base-checkbox class="checkbox-file dropdown-item text-left" :checked="true" @click="selectedFile('读取最新')">
-						       读取最新
-						   </base-checkbox>
-						   <base-checkbox class="checkbox-file dropdown-item text-left" v-for="(option) in $rtl.fileNameList" :key="option">
-						       {{ option }}
-						   </base-checkbox>
-						 </div> -->
+				     <ul class="dropdown-menu file-select-ul">
+						<el-checkbox label="读取最新" :indeterminate="isIndeterminate" v-model="checkNew" @change="selectNew()"></el-checkbox>
+						<el-checkbox-group v-model="checkList" @change="selectFiles()">
+						   <el-checkbox v-for="(option) in $rtl.fileNameList" :key="option" :label="option" ></el-checkbox>
+						</el-checkbox-group>
 				     </ul>
 				</drop-down>
 				<drop-down>
@@ -125,7 +114,8 @@
 	.tim-icons{margin-bottom: 10px;}
 	.modal-body{background-color: #f5f6fa;}
 	.dropdown-item{text-align: center; margin-left: 10px;}
-	.btn-rotate{width: 220px;}
+	.btn-rotate{width: 180px;}
+	.file-select .el-checkbox{margin-left: 10px;}
 	.file-select{margin-right: 1.25rem;}
 	.modal.show .modal-dialog {
 	    -webkit-transform: translate(0, 5%);
@@ -150,21 +140,37 @@
 		},
 		data() {
 		  return {
+			  selectFileTip:"读取最新",
 			  searchModalVisible: false,
+			  checkNew: true,
+			  isIndeterminate: false,
 			  checkList:[]
 		  };
 		},
 		methods:{
-			changeNew(){
-				console.log(this.checkList)
+			selectNew(){
+				if (this.checkNew) {
+					this.isIndeterminate = false;
+					this.checkList = [];
+					this.selectFileTip = '读取最新';
+					
+				} else {
+					this.isIndeterminate = true;
+				}	
+				this.$rtl.selectedFiles = this.checkList;
+			},
+			selectFiles(){
+				if (this.checkList.length > 0) {
+					this.selectFileTip = '自主选择';
+					this.isIndeterminate = true;
+					this.checkNew = false;	
+				}
+				this.$rtl.selectedFiles = this.checkList;
 			},
 			closeModal(){
 				this.$rtl.chartParams.refreshTimer = true;
 				this.$rtl.mapParams.refreshTimer = true;
 				this.searchModalVisible = false;
-			},
-			selectedFile(fileName){
-				this.$rtl.currentFileName = fileName;
 			},
 			//截图方法
 			printscreen(){

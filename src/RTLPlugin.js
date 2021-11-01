@@ -24,7 +24,7 @@ export default {
 		  companyName: '',
 		  mapType: '',
 		  fileNameList: [],
-		  currentFileName: '读取最新',
+		  selectedFiles: [],
 		  timeRange: ''
         }
       },

@@ -169,7 +169,7 @@ export default{
 				dataType : 'map-line',
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
+				selectedFiles: this.$rtl.selectedFiles,
 				timeRange: ''
 			}).then(resp => {
 				if (resp.data.code != -1) {

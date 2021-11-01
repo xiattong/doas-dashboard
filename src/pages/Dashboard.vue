@@ -101,7 +101,7 @@ export default {
 			this.axios.post('http://'+this.$rtl.hostIp+ ':' + this.$rtl.port + '/doas/initData',{
 				dataType : 'chart',
 				extractNum : this.$rtl.chartParams.extractNum,
-				currentFileName: this.$rtl.currentFileName == '读取最新' ? "" : this.$rtl.currentFileName,
+				selectedFiles: this.$rtl.selectedFiles,
 				timeRange: this.$rtl.timeRange
 			}).then(resp => {
 				if (resp.data.code != -1) {
