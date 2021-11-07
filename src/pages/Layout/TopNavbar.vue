@@ -12,10 +12,12 @@
 				        {{ selectFileTip }}
 				     </button>
 				     <ul class="dropdown-menu file-select-ul">
+					 <template>
 						<el-checkbox label="读取最新" :indeterminate="isIndeterminate" v-model="checkNew" @change="selectNew()"></el-checkbox>
 						<el-checkbox-group v-model="checkList" @change="selectFiles()">
 						   <el-checkbox v-for="(option) in $rtl.fileNameList" :key="option" :label="option" ></el-checkbox>
 						</el-checkbox-group>
+					 </template>
 				     </ul>
 				</drop-down>
 				<drop-down>
@@ -88,10 +90,14 @@
 					  </div>
 					</div>
 					<div class="row">
-					  <div class="col-md-12 pr-md-12 text-left">
+					  <div class="col-md-6 pr-md-6 text-left">
 						<base-input label="线条高度调参"  type="number"
 							v-model="$rtl.mapParams.hiehtFactor">
 						</base-input>
+					  </div>
+					  <div class="col-md-6 pr-md-6 text-left">
+						<el-switch v-model="mapViewModel" active-text="查看轨迹" style="margin-top: 2.375rem;"
+							@change="changeMapModle()" active-value='2D' inactive-value='3D'></el-switch>		
 					  </div>
 					</div>
 					<div class="row">
@@ -144,7 +150,8 @@
 			  searchModalVisible: false,
 			  checkNew: true,
 			  isIndeterminate: false,
-			  checkList:[]
+			  checkList:[],
+			  mapViewModel: '3D'
 		  };
 		},
 		methods:{
@@ -186,6 +193,13 @@
 					a.download = 'imgBox';
 					a.click();
 				})
+			},
+			changeMapModle(){
+				console.log(this.mapViewModel);
+				if (this.$rtl.mapViewModel != this.mapViewModel) {
+					this.$rtl.refreshMapViewModel = true;
+				}
+				this.$rtl.mapViewModel = this.mapViewModel;
 			}
 		}
 	}

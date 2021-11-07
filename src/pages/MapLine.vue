@@ -39,7 +39,7 @@
 	#color3{background-image: linear-gradient(to right, #00ff00, #ffff00); text-align: right; padding-right: 5px;}
 	#color4{background-image: linear-gradient(to right, #ffff00, #ff0000); text-align: right; padding-right: 5px;}
 </style>
-<script src="https://webapi.amap.com/maps?v=1.4.15&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
+<script src="https://webapi.amap.com/maps?v=2.0&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
 <script>
 import {
   Card
@@ -86,7 +86,7 @@ export default{
 					zoom: 13,
 					pitch: 65,
 					rotation: 0,
-					viewMode:'3D',
+					viewMode: this.$rtl.mapViewModel,
 					zooms:[2,20],
 					center: [117.284387,31.863847]
 				});
@@ -164,6 +164,12 @@ export default{
 			map.add(object3Dlayer);
 		},
 		refreshMapData() {
+			// 是否需初始化地图模型
+			if (this.$rtl.refreshMapViewModel) {
+				this.initMap();
+				this.$rtl.refreshMapViewModel = false;
+			}
+			
 			// 注意：因为 axios 是加到 Vue 的原型中了，所以使用 axios 方法时，前面需要加 this
 			this.axios.post('http://'+this.$rtl.hostIp + ':' + this.$rtl.port +'/doas/initData',{
 				dataType : 'map-line',

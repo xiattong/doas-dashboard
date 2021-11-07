@@ -25,7 +25,9 @@ export default {
 		  mapType: '',
 		  fileNameList: [],
 		  selectedFiles: [],
-		  timeRange: ''
+		  timeRange: '',
+		  mapViewModel: '3D',
+		  refreshMapViewModel: false
         }
       },
 	  created(){

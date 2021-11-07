@@ -20,11 +20,10 @@ import VueRouter from "vue-router";
 import SocialSharing from "vue-social-sharing";
 import VueGitHubButtons from "vue-github-buttons";
 import "vue-github-buttons/dist/vue-github-buttons.css";
-import App from "./App.vue";
+
 import '@/assets/scss/white-dashboard.scss';
 import '@/assets/css/nucleo-icons.css';
 import "@/assets/demo/demo.css";
-
 
 import GlobalComponents from "./globalComponents";
 import GlobalDirectives from "./globalDirectives";
@@ -34,6 +33,8 @@ import i18n from "./i18n"
 import SideBar from "@/components/SidebarPlugin";
 import VueAMap from 'vue-amap';
 import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import App from "./App.vue";
 
 Vue.config.productionTip = false;
 
