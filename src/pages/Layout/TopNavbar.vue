@@ -154,6 +154,9 @@
 			  mapViewModel: '3D'
 		  };
 		},
+		mounted() {
+			this.checkList = this.$rtl.selectedFiles;
+		},
 		methods:{
 			selectNew(){
 				if (this.checkNew) {
