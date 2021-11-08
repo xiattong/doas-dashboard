@@ -231,7 +231,7 @@
 				if (this.mapViewModel == '3D') {
 					// 轨迹图
 					this.mapViewModel = '2D';
-					this.modelBtnColor = 'success';
+					this.modelBtnColor = 'warning';
 				} else {
 					this.mapViewModel = '3D';
 					this.modelBtnColor = 'info';
