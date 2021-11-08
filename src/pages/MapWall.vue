@@ -65,7 +65,8 @@ export default{
 				coordinates: [],
 				// red值
 				red: 0
-			}
+			},
+			center: [117.284387,31.863847]
 		}
 	},
 	mounted() {
@@ -87,8 +88,7 @@ export default{
 					rotation: 0,
 					viewMode:'3D',
 					zooms:[2,20],
-					center: [117.284387,31.863847]
-					//center: [116.472804, 39.995725]
+					center: this.center
 				});
 				// 比例尺
 				map.addControl(new AMap.Scale());
@@ -129,6 +129,7 @@ export default{
 			}).then(resp => {
 				if (resp.data.code != -1) {
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
+					this.$rtl.companyName = resp.data.result.companyName;
 					if (resp.data.code == 1) {
 						this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 						this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
@@ -159,6 +160,12 @@ export default{
 		initMapData(index){
 			// 连线对象
 			object3Dlayer.clear();
+			if(this.$rtl.refreshCenter && this.mapData.coordinates.length > 0){
+				// 切换要素时，将最新的坐标设置地图坐标中心位置
+				this.toCoordinate = this.mapData.coordinates[0];
+				this.$rtl.refreshCenter = false;
+				map.panTo(this.toCoordinate);
+			}
 			for (let i = 0; i < this.mapData.coordinates.length - 1 ; i++ ) {
 				// 坐标
 				let coordinate_1 = this.mapData.coordinates[i];
@@ -178,12 +185,6 @@ export default{
 				wall.backOrFront = 'both';
 				wall.transparent = true;
 				object3Dlayer.add(wall);
-				if(this.toCoordinate == null 
-					&& i == this.mapData.coordinates.length - 2){
-					// 切换要素时，将最新的坐标设置地图坐标中心位置
-					this.toCoordinate = coordinate_2;
-					map.panTo(this.toCoordinate);
-				}
 			}
 			this.mapData.activeIndex = index;
 		},

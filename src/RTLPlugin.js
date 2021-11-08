@@ -26,8 +26,12 @@ export default {
 		  fileNameList: [],
 		  selectedFiles: [],
 		  timeRange: '',
+		  // 地图模式
 		  mapViewModel: '3D',
-		  refreshMapViewModel: false
+		  // 控制是否需初始化地图模型
+		  refreshMapViewModel: false,
+		  // 是否需要重新定位地图中心位置
+		  refreshCenter: true
         }
       },
 	  created(){

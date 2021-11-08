@@ -8,9 +8,9 @@
         </div>
         <ul class="nav">
 			<slot>
-				<sidebar-link>
-				</sidebar-link>
+				<sidebar-link></sidebar-link>
 			</slot>
+			
         </ul>
 		<div class="copyright">
 			<a href="#" class="nav-link">

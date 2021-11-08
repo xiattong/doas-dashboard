@@ -3,8 +3,6 @@
 		<div class="container-fluid">
 			<div class="navbar-wrapper">
 				<a class="navbar-brand" href="javascript:void(0)"> {{ $route.name }}</a>
-				<el-switch v-if="$route.name == '地图'" v-model="mapViewModel" active-text="查看轨迹" style="margin-left: 4.375rem; margin-top: 0.3125rem;"
-					@change="changeMapModle()" active-value='2D' inactive-value='3D'></el-switch>
 			</div>
 			<div class="collapse navbar-collapse show text-left">
 				<ul class="navbar-nav ml-auto">
@@ -24,6 +22,9 @@
 									</el-checkbox-group>
 								</template>
 							</ul>
+						</drop-down>
+						<drop-down>
+							<base-button  v-if="$route.name == '地图'" :type="modelBtnColor" @click="changeMapModle()">{{this.$rtl.mapViewModel == '3D' ? '查看轨迹' : '查看数据' }}</base-button>
 						</drop-down>
 						<drop-down>
 							<base-button round icon :type="$rtl.sysState" data-toggle="dropdown"
@@ -176,7 +177,8 @@
 				checkNew: true,
 				isIndeterminate: false,
 				checkList: [],
-				mapViewModel: '3D'
+				mapViewModel: '3D',
+				modelBtnColor: 'info'
 			};
 		},
 		mounted() {
@@ -193,6 +195,7 @@
 					this.isIndeterminate = true;
 				}
 				this.$rtl.selectedFiles = this.checkList;
+				this.$rtl.refreshCenter = true;
 			},
 			selectFiles() {
 				if (this.checkList.length > 0) {
@@ -201,6 +204,7 @@
 					this.checkNew = false;
 				}
 				this.$rtl.selectedFiles = this.checkList;
+				this.$rtl.refreshCenter = true;
 			},
 			closeModal() {
 				this.$rtl.chartParams.refreshTimer = true;
@@ -223,7 +227,15 @@
 				})
 			},
 			changeMapModle() {
-				console.log(this.mapViewModel);
+				this.$rtl.refreshCenter = true;
+				if (this.mapViewModel == '3D') {
+					// 轨迹图
+					this.mapViewModel = '2D';
+					this.modelBtnColor = 'success';
+				} else {
+					this.mapViewModel = '3D';
+					this.modelBtnColor = 'info';
+				}
 				if (this.$rtl.mapViewModel != this.mapViewModel) {
 					this.$rtl.refreshMapViewModel = true;
 				}

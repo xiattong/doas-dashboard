@@ -66,7 +66,8 @@ export default{
 				coordinates: [],
 				// red值
 				red: 0
-			}
+			},
+			center: [117.284387,31.863847]
 		}
 	},
 	mounted() {
@@ -78,6 +79,7 @@ export default{
 	},
 	methods: {
 		initMap(){
+			this.$rtl.refreshCenter = true;
 			lazyAMapApiLoaderInstance.load().then(() => {
 				map = new AMap.Map('amapContainer', {
 					rotateEnable:true,
@@ -88,7 +90,7 @@ export default{
 					rotation: 0,
 					viewMode: this.$rtl.mapViewModel,
 					zooms:[2,20],
-					center: [117.284387,31.863847]
+					center: this.center
 				});
 				// 比例尺
 				map.addControl(new AMap.Scale());
@@ -180,6 +182,7 @@ export default{
 			}).then(resp => {
 				if (resp.data.code != -1) {
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
+					this.$rtl.companyName = resp.data.result.companyName;
 					if (resp.data.code == 1) {
 						this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
 						this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
@@ -198,7 +201,6 @@ export default{
 					object3Dlayer.clear();
 				}
 			}).catch(err => {
-				
 				console.log(err);
 			})
 			// 刷新定时器
@@ -213,6 +215,14 @@ export default{
 			object3Dlayer.clear();
 			lines = new AMap.Object3D.Line();
 			lineGeo = lines.geometry;
+			console.log("0:" + this.toCoordinate)
+			if(this.$rtl.refreshCenter && this.mapData.coordinates.length > 0){
+				// 切换要素时，将最新的坐标设置地图坐标中心位置
+				this.toCoordinate = this.mapData.coordinates[0];
+				map.panTo(this.toCoordinate);
+				this.$rtl.refreshCenter = false;
+				console.log("1:" + this.toCoordinate)
+			}
 			for (let i = 0; i < this.mapData.coordinates.length ; i++ ) {
 				// 坐标
 				let coordinate = this.mapData.coordinates[i];
@@ -229,12 +239,6 @@ export default{
 				lineGeo.vertexColors.push(color[0], color[1], color[2], 1);
 				lineGeo.vertices.push(center.x, center.y, height);
 				lineGeo.vertexColors.push(color[0], color[1], color[2], 1);
-				if(this.toCoordinate == null 
-					&& i == this.mapData.coordinates.length - 1){
-					// 切换要素时，将最新的坐标设置地图坐标中心位置
-					this.toCoordinate = coordinate;
-					map.panTo(this.toCoordinate);
-				}
 			}
 			object3Dlayer.add(lines);
 			this.mapData.activeIndex = index;
