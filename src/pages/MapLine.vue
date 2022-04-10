@@ -178,7 +178,7 @@ export default{
 				extractNum : this.$rtl.mapParams.extractNum,
 				redList : this.$rtl.mapParams.redListStr,
 				selectedFiles: this.$rtl.selectedFiles,
-				timeRange: ''
+				timeRange: this.$rtl.timeRange
 			}).then(resp => {
 				if (resp.data.code != -1) {
 					this.$rtl.fileNameList = resp.data.result.fileNameList;
@@ -210,18 +210,16 @@ export default{
 				this.timer = setInterval(this.refreshMapData,  this.$rtl.mapParams.refreshSecond * 1000);
 			}
 		},
-		initMapData(index){
+		initMapData(index) {
 			//连线对象
 			object3Dlayer.clear();
 			lines = new AMap.Object3D.Line();
 			lineGeo = lines.geometry;
-			console.log("0:" + this.toCoordinate)
 			if(this.$rtl.refreshCenter && this.mapData.coordinates.length > 0){
 				// 切换要素时，将最新的坐标设置地图坐标中心位置
 				this.toCoordinate = this.mapData.coordinates[0];
 				map.panTo(this.toCoordinate);
 				this.$rtl.refreshCenter = false;
-				console.log("1:" + this.toCoordinate)
 			}
 			for (let i = 0; i < this.mapData.coordinates.length ; i++ ) {
 				// 坐标
