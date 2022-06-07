@@ -31,7 +31,11 @@ export default {
 		  // 控制是否需初始化地图模型
 		  refreshMapViewModel: false,
 		  // 是否需要重新定位地图中心位置
-		  refreshCenter: true
+		  refreshCenter: true,
+		  // 光源光强
+		  lightIntensity: 0,
+		  // 光源已使用时间
+		  lightServiceTime: 0
         }
       },
 	  created(){

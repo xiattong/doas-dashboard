@@ -7,6 +7,16 @@
 			<div class="collapse navbar-collapse show text-left">
 				<ul class="navbar-nav ml-auto">
 					<li class="search-bar input-group">
+						<drop-down>
+							<base-button simple :type="$rtl.sysState" data-toggle="dropdown" data-target="#sysState">
+								系统状态：{{ $rtl.sysState == 'success' ? '已连接' : ($rtl.sysState == 'warning' ? '正在链接' : '断开') }}
+							</base-button>
+						</drop-down>
+						<drop-down>
+							<base-button simple :type="$rtl.gpsState" data-toggle="dropdown" data-target="#gpsState" style="margin-right: 0.6rem;">
+								GPS状态：{{ $rtl.gpsState == 'success' ? '已连接' :  ($rtl.gpsState == 'warning' ? '正在搜索' : '断开') }}
+							</base-button>
+						</drop-down>
 						<drop-down tag="div" class="file-select">
 							<button aria-label="Success" data-toggle="dropdown"
 								class="dropdown-toggle btn-rotate btn btn-success">
@@ -26,26 +36,6 @@
 						<drop-down>
 							<base-button  v-if="$route.name == '地图'" :type="modelBtnColor" @click="changeMapModle()">{{this.$rtl.mapViewModel == '3D' ? '查看轨迹' : '查看数据' }}</base-button>
 						</drop-down>
-						<drop-down>
-							<base-button round icon :type="$rtl.sysState" data-toggle="dropdown"
-								data-target="#sysState">
-								<i class="tim-icons icon-wifi"></i>
-							</base-button>
-							<ul class="dropdown-menu dropdown-navbar" id="sysState">
-								<a href="#" class="dropdown-item">系统状态：
-									{{ $rtl.sysState == 'success' ? '已连接' : '断开' }}</a>
-							</ul>
-						</drop-down>
-						<drop-down>
-							<base-button round icon :type="$rtl.gpsState" data-toggle="dropdown"
-								data-target="#gpsState">
-								<i class="tim-icons icon-send"></i>
-							</base-button>
-							<ul class="dropdown-menu dropdown-navbar" id="gpsState">
-								<a href="#" class="dropdown-item">GPS状态：
-									{{ $rtl.gpsState == 'success' ? '已连接' : '断开' }}</a>
-							</ul>
-						</drop-down>
 						<base-button round icon type="primary" id="setting" @click="searchModalVisible = true"
 							data-toggle="modal" data-target="#searchModal">
 							<i class="tim-icons icon-settings-gear-63"></i>
@@ -60,7 +50,7 @@
 							<i class="tim-icons icon-simple-remove"></i>
 						</base-button>
 						<card>
-				   <div class="row">
+							<div class="row">
 								<div class="col-md-12 pr-md-12 text-left">
 									<h5 class="title">曲线图参数设置</h5>
 								</div>
@@ -116,10 +106,6 @@
 	</nav>
 </template>
 <style>
-	#setting {
-		margin-left: 10px !important;
-	}
-
 	#printscreen {
 		margin-left: 1.25rem;
 	}

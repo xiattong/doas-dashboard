@@ -49,6 +49,7 @@
 					</tr>
 				  </tbody>
 				</table>
+				<span class="float-right">光源光强 : {{$rtl.lightIntensity}}&nbsp;&nbsp;&nbsp;&nbsp;光源已使用时间 : {{$rtl.lightServiceTime}} 小时</span>
 			</card>
 		</div>
 	</div>
@@ -107,10 +108,24 @@ export default {
 				if (resp.data.code != -1) {
 					this.$rtl.companyName = resp.data.result.companyName;
 					this.$rtl.mapType = resp.data.result.mapType;
-					this.$rtl.fileNameList = resp.data.result.fileNameList;
+					this.$rtl.fileNameList = resp.data.result.fileNamieList;
 					if (resp.data.code == 1) {
-						this.$rtl.sysState = resp.data.result.systemState[0] == '1'? 'success' : 'danger';
-						this.$rtl.gpsState = resp.data.result.systemState[1] == '1'? 'success' : 'danger';
+						if (resp.data.result.systemState[0] == '1') {
+							this.$rtl.sysState = 'success'
+						} else if (resp.data.result.systemState[0] == '2') {
+							this.$rtl.sysState = 'warning'
+						} else {
+							this.$rtl.sysState = 'danger'
+						} 
+						if (resp.data.result.systemState[1] == '1') {
+							this.$rtl.gpsState = 'success'
+						} else if (resp.data.result.systemState[1] == '2') {
+							this.$rtl.gpsState = 'warning'
+						} else {
+							this.$rtl.gpsState = 'danger'
+						} 
+						this.$rtl.lightIntensity = resp.data.result.systemState[2];
+						this.$rtl.lightServiceTime = resp.data.result.systemState[3];
 						this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
 						if (this.bigLineChart.bigLineChartCategoriesCopy.length == 0) {
 							this.bigLineChart.bigLineChartCategoriesCopy = resp.data.result.factors;

@@ -179,8 +179,22 @@
 						this.$rtl.fileNameList = resp.data.result.fileNameList;
 						this.$rtl.companyName = resp.data.result.companyName;
 						if (resp.data.code == 1) {
-							this.$rtl.sysState = resp.data.result.systemState[0] == '1' ? 'success' : 'danger';
-							this.$rtl.gpsState = resp.data.result.systemState[1] == '1' ? 'success' : 'danger';
+							if (resp.data.result.systemState[0] == '1') {
+								this.$rtl.sysState = 'success'
+							} else if (resp.data.result.systemState[0] == '2') {
+								this.$rtl.sysState = 'warning'
+							} else {
+								this.$rtl.sysState = 'danger'
+							} 
+							if (resp.data.result.systemState[1] == '1') {
+								this.$rtl.gpsState = 'success'
+							} else if (resp.data.result.systemState[1] == '2') {
+								this.$rtl.gpsState = 'warning'
+							} else {
+								this.$rtl.gpsState = 'danger'
+							} 
+							this.$rtl.lightIntensity = resp.data.result.systemState[2];
+							this.$rtl.lightServiceTime = resp.data.result.systemState[3];
 							this.$rtl.mapParams.redListStr = resp.data.result.redListStr;
 							this.mapData.factors = resp.data.result.factors;
 							this.mapData.data = resp.data.result.data;
