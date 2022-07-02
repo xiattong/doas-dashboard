@@ -180,12 +180,10 @@
 						this.$rtl.companyName = resp.data.result.companyName;
 						if (resp.data.code == 1) {
 							if (resp.data.result.systemState[0] == '1') {
-								this.$rtl.sysState = 'success'
-							} else if (resp.data.result.systemState[0] == '2') {
-								this.$rtl.sysState = 'warning'
-							} else {
-								this.$rtl.sysState = 'danger'
-							} 
+									this.$rtl.sysState = 'success'
+								} else {
+									this.$rtl.sysState = 'danger'
+								}
 							if (resp.data.result.systemState[1] == '1') {
 								this.$rtl.gpsState = 'success'
 							} else if (resp.data.result.systemState[1] == '2') {

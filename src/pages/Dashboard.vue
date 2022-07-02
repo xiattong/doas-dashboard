@@ -112,11 +112,9 @@ export default {
 					if (resp.data.code == 1) {
 						if (resp.data.result.systemState[0] == '1') {
 							this.$rtl.sysState = 'success'
-						} else if (resp.data.result.systemState[0] == '2') {
-							this.$rtl.sysState = 'warning'
 						} else {
 							this.$rtl.sysState = 'danger'
-						} 
+						}
 						if (resp.data.result.systemState[1] == '1') {
 							this.$rtl.gpsState = 'success'
 						} else if (resp.data.result.systemState[1] == '2') {
@@ -126,7 +124,7 @@ export default {
 						} 
 						this.$rtl.lightIntensity = resp.data.result.systemState[2];
 						this.$rtl.lightServiceTime = resp.data.result.systemState[3];
-						this.bigLineChart.bigLineChartCategories = resp.data.result.factors;
+						this.bigLineChart.bigLineChartCategories = resp.data.result.factorsNoUnit;
 						if (this.bigLineChart.bigLineChartCategoriesCopy.length == 0) {
 							this.bigLineChart.bigLineChartCategoriesCopy = resp.data.result.factors;
 						}

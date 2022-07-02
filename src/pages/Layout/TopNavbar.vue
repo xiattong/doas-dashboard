@@ -9,7 +9,7 @@
 					<li class="search-bar input-group">
 						<drop-down>
 							<base-button simple :type="$rtl.sysState" data-toggle="dropdown" data-target="#sysState">
-								系统状态：{{ $rtl.sysState == 'success' ? '已连接' : ($rtl.sysState == 'warning' ? '正在链接' : '断开') }}
+								设备状态：{{ $rtl.sysState == 'success' ? '已连接' : ($rtl.sysState == 'warning' ? '正在连接' : '断开') }}
 							</base-button>
 						</drop-down>
 						<drop-down>
