@@ -14,7 +14,7 @@ export default {
 			  refreshSecond: 3, //刷新时间 单位：秒，3
 			  redList: '', //色等值
 			  redListStr: '',
-			  hiehtFactor: 120 ,//高度参数
+			  hiehtFactor: 30 ,//高度参数
 			  refreshTimer: false //定时器刷新控制
 		  },
 		  sysState: 'danger',

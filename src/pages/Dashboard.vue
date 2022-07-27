@@ -25,8 +25,8 @@
 				  <thead>
 				    <tr>
 				      <slot name="columns">
-						<th class="text-left" style="width: 8%;">{{this.latestTime}}</th>
-						<th class="text-left" v-for="column in this.bigLineChart.bigLineChartCategoriesCopy" :key="column"> {{ column }}</th> 
+						<td class="text-left" style="width: 8%;">{{this.latestTime}}</td>
+						<td class="text-left" v-for="column in this.bigLineChart.bigLineChartCategoriesCopy" :key="column"> {{ column }}</td> 
 				      </slot>
 				    </tr>
 				  </thead>
@@ -108,7 +108,7 @@ export default {
 				if (resp.data.code != -1) {
 					this.$rtl.companyName = resp.data.result.companyName;
 					this.$rtl.mapType = resp.data.result.mapType;
-					this.$rtl.fileNameList = resp.data.result.fileNamieList;
+					this.$rtl.fileNameList = resp.data.result.fileNameList;
 					if (resp.data.code == 1) {
 						if (resp.data.result.systemState[0] == '1') {
 							this.$rtl.sysState = 'success'
