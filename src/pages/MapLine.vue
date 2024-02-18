@@ -6,9 +6,9 @@
 			<div class="btn-group btn-group-toggle float-right" data-toggle="buttons">
 			    <template>
 			        <label v-for="(option, index) in mapData.factors" :key="option" :id="index"
-						class="btn btn-info btn-sm btn-simple" :class="{active:mapData.activeIndex === index}">
+						      class="btn btn-info btn-sm btn-simple" :class="{active:mapData.activeIndex === index}">
 			            <input type="radio" @click="chooseFactors(index)" name="options" autocomplete="off">
-						{{option}}
+						      {{option}}
 			        </label>
 			    </template>
 			</div>
@@ -41,9 +41,6 @@
 </style>
 <script src="https://webapi.amap.com/maps?v=2.0&key=24eab6be67592f28a28b0df41307192f&plugin=Map3D"></script>
 <script>
-import {
-  Card
-} from "@/components/index";
 import {lazyAMapApiLoaderInstance} from 'vue-amap';
 let map,object3Dlayer,lines,lineGeo,startMarker,endMarker,polyline;
 
